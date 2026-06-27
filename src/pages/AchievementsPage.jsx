@@ -1,123 +1,247 @@
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 export default function AchievementsPage() {
   const achievements = [
     {
-      year: '2026',
-      title: 'Vanguard Conception & EV Pivot',
+      year: '2025',
+      title: 'SUPRA SAE',
       events: [
         {
-          name: 'FS EV Concept Submissions',
-          result: 'Top 5 Design Score',
-          desc: 'Achieved top 5 position in the concept design reviews for our first Electric Vehicle (EV) chassis and battery system prototype.'
+          name: 'SUPRA SAEIndia 2025',
+          result: 'Combustion Performance',
+          desc: 'Competed with our highly optimized combustion vehicle featuring a custom aerodynamic package and spaceframe chassis.'
         }
       ]
     },
     {
       year: '2024',
-      title: 'Combustion Excellence & Double Podiums',
+      title: 'FB',
       events: [
         {
-          name: 'Formula Bharat 2024 (Combustion)',
+          name: 'Formula Bharat 2024',
           result: '3rd Place Overall',
-          desc: 'Podium finish among 45 national teams, winning first place in engineering design and second place in cost audits.'
-        },
-        {
-          name: 'Engineering Design Event',
-          result: '1st Place Award',
-          desc: 'Recognized by international judges for our simulation-led aerodynamic development and carbon-fiber integrations.'
+          desc: 'Secured overall podium finish at the national Formula Student event, winning 1st in Engineering Design and 2nd in Cost Event.'
         }
       ]
     },
     {
       year: '2023',
-      title: 'Dynamic Dominance & Speed Records',
+      title: 'FB',
       events: [
         {
           name: 'Formula Bharat 2023',
           result: '1st in Acceleration',
-          desc: 'Dominated the straight line acceleration track event, completing 75m in a record 4.02 seconds.'
-        },
-        {
-          name: 'Autocross Dynamic Challenge',
-          result: '3rd Place Finish',
-          desc: 'Demonstrated outstanding agility and handling through the tight autocross twist circuit.'
-        }
-      ]
-    },
-    {
-      year: '2022',
-      title: 'Global Footprint Representation',
-      events: [
-        {
-          name: 'Formula Student Germany (Virtual)',
-          result: 'Top 15 Overall',
-          desc: 'Secured top 15 rank internationally in design and cost presentations during the virtual European challenge.'
+          desc: 'Achieved first place in straight-line acceleration (75m in 4.02 seconds) with custom launch control.'
         }
       ]
     },
     {
       year: '2020',
-      title: 'Business & Presentation Acumen',
+      title: 'FE',
       events: [
         {
-          name: 'Formula Student India',
+          name: 'Formula Student India / FE',
           result: '4th Place Overall',
-          desc: 'Finished 4th overall, claiming the runner-up trophy in the Business Logic Presentation event.'
+          desc: 'Finished 4th overall in the national electric/combustion category, securing runner-up in Business Plan Presentation.'
         }
       ]
     },
     {
       year: '2019',
-      title: 'The Breakthrough Debut',
+      title: 'FB',
       events: [
         {
           name: 'Formula Bharat 2019',
-          result: 'Best Debutant Team Award',
-          desc: 'Awarded the Best Debutant Team trophy for completing technical inspection and running all dynamic events on our first try.'
+          result: 'Best Debutant Team',
+          desc: 'Won the Best Debutant award for successfully passing all technical inspection checkpoints and finishing all dynamic tracks.'
+        }
+      ]
+    },
+    {
+      year: '2017',
+      title: 'SUPRA SAE',
+      events: [
+        {
+          name: 'SUPRA SAEIndia 2017',
+          result: 'Top 10 Design',
+          desc: 'Secured a top 10 finish in the engineering design category, showcasing innovative mechanical linkages and custom exhaust tuning.'
+        }
+      ]
+    },
+    {
+      year: '2016',
+      title: 'FB',
+      events: [
+        {
+          name: 'Formula Bharat 2016',
+          result: 'Technical Inspection',
+          desc: 'Successfully cleared technical inspection on first attempt and ran dynamic trials, validating chassis strength.'
+        }
+      ]
+    },
+    {
+      year: '2015',
+      title: 'FS CHINA',
+      events: [
+        {
+          name: 'Formula Student China 2015',
+          result: 'International Debut',
+          desc: 'Competed internationally at Shanghai, China, passing strict technical inspection guidelines and static categories.'
+        }
+      ]
+    },
+    {
+      year: '2012',
+      title: 'FS HUNGARY',
+      events: [
+        {
+          name: 'Formula Student Hungary 2012',
+          result: 'First Global Event',
+          desc: 'Represented our university on the European track, learning core manufacturing and engineering standards.'
         }
       ]
     }
   ];
+
+  const containerRef = useRef(null);
+  const progressLineRef = useRef(null);
+  const nodeRefs = useRef([]);
+
+  // Clear refs array on re-render
+  nodeRefs.current = [];
+
+  const addToRefs = (el) => {
+    if (el && !nodeRefs.current.includes(el)) {
+      nodeRefs.current.push(el);
+    }
+  };
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // Animate progress bar filling
+      gsap.fromTo(
+        progressLineRef.current,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 30%',
+            end: 'bottom 70%',
+            scrub: true,
+          }
+        }
+      );
+
+      // Animate each node's dot, bubble and card
+      nodeRefs.current.forEach((node, idx) => {
+        if (!node) return;
+
+        const dot = node.querySelector('.timeline-dot');
+        const year = node.querySelector('.year-bubble');
+        const card = node.querySelector('.event-detail-card');
+
+        // Dot animation
+        gsap.fromTo(
+          dot,
+          { backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border)', scale: 0.8 },
+          {
+            backgroundColor: 'var(--accent)',
+            borderColor: 'var(--accent)',
+            scale: 1.2,
+            boxShadow: '0 0 15px var(--accent)',
+            scrollTrigger: {
+              trigger: node,
+              start: 'top 55%',
+              end: 'top 45%',
+              toggleActions: 'play reverse play reverse',
+            }
+          }
+        );
+
+        // Year Bubble zoom-in/highlight trigger
+        gsap.fromTo(
+          year,
+          { opacity: 0.7, scale: 0.95 },
+          {
+            opacity: 1,
+            scale: 1.05,
+            scrollTrigger: {
+              trigger: node,
+              start: 'top 55%',
+              end: 'top 45%',
+              toggleActions: 'play reverse play reverse',
+            }
+          }
+        );
+
+        // Card entry transition
+        gsap.fromTo(
+          card,
+          { opacity: 0, x: idx % 2 === 0 ? -40 : 40, y: 20 },
+          {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: node,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
+            }
+          }
+        );
+      });
+    }, containerRef);
+
+    // Refresh ScrollTrigger to ensure correct coordinate calculations
+    ScrollTrigger.refresh();
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <div className="achievements-page">
       <div className="checkered-pattern"></div>
       <div className="speed-lines"></div>
 
-      <div className="ach-hero">
-        <div className="container">
-          <div className="chevron-decor hero-chevron">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <h1 className="page-hero-title">Our Legacy</h1>
-          <p className="page-hero-desc">
-            A chronicle of grit, engineering innovation, and competitive success on national and international tracks.
-          </p>
-        </div>
-      </div>
-
       <div className="container timeline-section">
-        <div className="timeline-trail">
+        <div className="timeline-trail" ref={containerRef}>
+          {/* Background trace line */}
+          <div className="timeline-line-bg"></div>
+          
+          {/* Animated active progress line */}
+          <div className="timeline-line-progress-wrapper">
+            <div className="timeline-line-progress-bar" ref={progressLineRef}></div>
+          </div>
+
           {achievements.map((ach, idx) => (
-            <div key={idx} className="timeline-node">
-              {/* Year marker */}
-              <div className="timeline-year-marker">
+            <div 
+              key={idx} 
+              ref={addToRefs} 
+              className={`timeline-node ${idx % 2 === 0 ? 'left-node' : 'right-node'}`}
+            >
+              {/* Central node bullet */}
+              <div className="timeline-dot"></div>
+
+              {/* Date Header */}
+              <div className="timeline-year">
                 <span className="year-bubble">{ach.year}</span>
-                <span className="year-title">{ach.title}</span>
               </div>
-              
-              {/* Event Cards */}
-              <div className="timeline-event-cards">
-                {ach.events.map((evt, eIdx) => (
-                  <div key={eIdx} className="card event-detail-card">
-                    <div className="event-header-row">
-                      <h3 className="event-name">{evt.name}</h3>
-                      <span className="event-result">{evt.result}</span>
-                    </div>
-                    <p className="event-desc">{evt.desc}</p>
-                  </div>
-                ))}
+
+              {/* Event Card content */}
+              <div className="card event-detail-card">
+                <div className="event-header-row">
+                  <h3 className="event-name">{ach.events[0].name}</h3>
+                  <span className="event-result">{ach.events[0].result}</span>
+                </div>
+                <p className="event-desc">{ach.events[0].desc}</p>
               </div>
             </div>
           ))}
@@ -131,112 +255,169 @@ export default function AchievementsPage() {
           min-height: 80vh;
         }
 
-        .ach-hero {
-          background: linear-gradient(to bottom, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-          padding: 80px 0 40px;
-          border-bottom: 1px solid var(--border);
-          text-align: left;
-        }
 
-        .hero-chevron {
-          margin-bottom: 16px;
-        }
-
-        .page-hero-title {
-          font-size: 3.5rem;
-          line-height: 1.1;
-          margin-bottom: 16px;
-        }
-
-        .page-hero-desc {
-          font-size: 1.15rem;
-          color: var(--text-secondary);
-          max-width: 700px;
-        }
 
         .timeline-section {
-          padding-top: 60px;
+          padding-top: 80px;
           position: relative;
+          overflow: hidden;
         }
 
         .timeline-trail {
           position: relative;
-          padding-left: 40px;
-          border-left: 2px solid var(--border);
-          margin-left: 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 60px;
-          text-align: left;
+          max-width: 1000px;
+          margin: 0 auto;
+          padding: 40px 0;
         }
 
-        .timeline-trail::before {
-          content: '';
+        /* Background track line */
+        .timeline-line-bg {
           position: absolute;
+          left: 50%;
           top: 0;
-          left: -5px;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
+          bottom: 0;
+          width: 4px;
+          background-color: var(--border);
+          transform: translateX(-50%);
+          border-radius: 2px;
+          opacity: 0.5;
+        }
+
+        /* Progress line wrapper */
+        .timeline-line-progress-wrapper {
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          transform: translateX(-50%);
+          z-index: 2;
+        }
+
+        /* Active progress line itself */
+        .timeline-line-progress-bar {
+          width: 100%;
+          height: 100%;
           background-color: var(--accent);
+          transform-origin: top;
+          transform: scaleY(0);
+          border-radius: 2px;
+          box-shadow: 0 0 15px var(--accent);
         }
 
         .timeline-node {
           position: relative;
-        }
-
-        .timeline-year-marker {
           display: flex;
-          align-items: center;
-          gap: 20px;
-          margin-bottom: 24px;
-          position: relative;
+          align-items: flex-start;
+          width: 100%;
+          margin-bottom: 100px;
         }
 
-        /* Connecting bullet on the left border line */
-        .timeline-year-marker::before {
-          content: '';
+        .timeline-node:last-child {
+          margin-bottom: 0;
+        }
+
+        /* Alternating layout on large screens */
+        .timeline-node.left-node {
+          justify-content: flex-start;
+          padding-right: 50%;
+        }
+
+        .timeline-node.right-node {
+          justify-content: flex-end;
+          padding-left: 50%;
+        }
+
+        /* Connecting bullet on the center line */
+        .timeline-dot {
           position: absolute;
-          left: -51px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 20px;
-          height: 20px;
+          left: 50%;
+          top: 24px;
+          width: 18px;
+          height: 18px;
           border-radius: 50%;
           background-color: var(--bg-primary);
-          border: 4px solid var(--accent);
+          border: 4px solid var(--border);
+          transform: translate(-50%, -50%);
           z-index: 10;
+          transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+
+        .timeline-year {
+          position: absolute;
+          top: 24px;
+          transform: translateY(-50%);
+          z-index: 5;
+        }
+
+        .left-node .timeline-year {
+          left: 50%;
+          padding-left: 32px;
+          text-align: left;
+        }
+
+        .right-node .timeline-year {
+          right: 50%;
+          padding-right: 32px;
+          text-align: right;
         }
 
         .year-bubble {
           font-family: var(--font-primary);
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           font-weight: 700;
           color: #FFFFFF;
-          background-color: var(--accent);
-          padding: 4px 16px;
+          background-color: var(--bg-tertiary);
+          border: 1px solid var(--border);
+          padding: 6px 18px;
           border-radius: var(--border-radius-sm);
           display: inline-block;
+          transition: all 0.3s ease;
+          box-shadow: var(--shadow);
+        }
+
+        /* Light up the year bubble when active or hovered */
+        .timeline-node:hover .year-bubble {
+          background-color: var(--accent);
+          border-color: var(--accent);
           box-shadow: var(--glow);
         }
 
-        .year-title {
-          font-family: var(--font-primary);
-          font-size: 1.5rem;
-          font-weight: 600;
-          color: var(--text-primary);
-          text-transform: uppercase;
-        }
-
-        .timeline-event-cards {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          max-width: 800px;
-        }
-
+        /* Event Cards */
         .event-detail-card {
-          padding: 24px;
+          width: calc(100% - 40px);
+          max-width: 420px;
+          background: rgba(18, 18, 22, 0.45);
+          backdrop-filter: blur(16px);
+          border: 1px solid var(--border);
+          border-left: 4px solid var(--border);
+          padding: 24px 28px;
+          border-radius: var(--border-radius-md);
+          position: relative;
+          transition: var(--transition);
+        }
+
+        html[data-theme="light"] .event-detail-card {
+          background: rgba(255, 255, 255, 0.45);
+        }
+
+        .left-node .event-detail-card {
+          margin-right: 40px;
+          margin-left: auto;
+        }
+
+        .right-node .event-detail-card {
+          margin-left: 40px;
+          margin-right: auto;
+        }
+
+        /* Hover card effects */
+        .timeline-node:hover .event-detail-card {
+          border-color: var(--border);
+          border-left-color: var(--accent);
+          background-color: var(--card-hover-bg);
+          transform: translateY(-4px);
+          box-shadow: var(--shadow), var(--glow);
         }
 
         .event-header-row {
@@ -244,18 +425,28 @@ export default function AchievementsPage() {
           justify-content: space-between;
           align-items: center;
           gap: 16px;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding-bottom: 12px;
+        }
+
+        html[data-theme="light"] .event-header-row {
+          border-bottom-color: rgba(0, 0, 0, 0.05);
         }
 
         .event-name {
           font-size: 1.3rem;
           margin: 0;
+          font-family: var(--font-primary);
+          color: var(--text-primary);
+          font-weight: 700;
+          letter-spacing: 0.5px;
         }
 
         .event-result {
           font-family: var(--font-primary);
           font-weight: 700;
-          font-size: 1rem;
+          font-size: 0.9rem;
           text-transform: uppercase;
           letter-spacing: 0.5px;
           color: var(--accent);
@@ -263,32 +454,54 @@ export default function AchievementsPage() {
           padding: 4px 12px;
           border-radius: 20px;
           border: 1px solid rgba(225, 6, 0, 0.2);
+          white-space: nowrap;
         }
 
         .event-desc {
           font-size: 0.95rem;
           color: var(--text-secondary);
-          line-height: 1.6;
+          line-height: 1.65;
+          letter-spacing: 0.2px;
         }
 
+        /* Responsive Layout for Tablets/Mobile */
         @media (max-width: 768px) {
-          .timeline-trail {
-            padding-left: 20px;
-            margin-left: 10px;
+          .timeline-line-bg,
+          .timeline-line-progress-wrapper {
+            left: 20px;
+            transform: none;
           }
-          .timeline-year-marker::before {
-            left: -31px;
-            width: 14px;
-            height: 14px;
-            border-width: 3px;
-          }
-          .event-header-row {
+
+          .timeline-node {
             flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
+            padding-left: 50px !important;
+            padding-right: 0 !important;
+            margin-bottom: 60px;
           }
-          .event-result {
-            align-self: flex-start;
+
+          .timeline-dot {
+            left: 20px;
+            top: 20px;
+            transform: translate(-50%, -50%);
+          }
+
+          .timeline-year {
+            position: static;
+            transform: none;
+            margin-bottom: 16px;
+          }
+
+          .left-node .timeline-year,
+          .right-node .timeline-year {
+            padding: 0;
+            text-align: left;
+          }
+
+          .event-detail-card {
+            width: 100%;
+            max-width: none;
+            margin: 0 !important;
+            border-left-width: 4px;
           }
         }
       `}</style>
