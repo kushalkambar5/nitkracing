@@ -34,8 +34,16 @@ export default function Hero({ setPath }) {
     cameraTarY: 0.3,
     cameraTarZ: 1.8,
     cameraFov: 50,
+    cameraOrbitBlend: 0,
+    cameraOrbitAngle: 0,
+    cameraOrbitRadius: 10.8,
+    cameraOrbitHeight: 1.55,
+    cameraOrbitTargetX: 0,
+    cameraOrbitTargetY: 0.5,
+    cameraOrbitTargetZ: 0,
 
-    vibration: 0,
+    idleVibration: 0,
+    launchJitter: 0,
 
     // HUD/UI
     hudOpacity: 1.0,
@@ -58,14 +66,11 @@ export default function Hero({ setPath }) {
 
   // Interpolation for car Z — used by smoke particles
   const getCarZAtProgress = (p) => {
-    if (p <= 0.55) return 0;
-    if (p <= 0.75) {
-      return ((p - 0.55) / 0.2) * 22;
+    if (p <= 0.76) return 0;
+    if (p <= 0.92) {
+      return ((p - 0.76) / 0.16) * 52;
     }
-    if (p <= 0.9) {
-      return 22 + ((p - 0.75) / 0.15) * 20;
-    }
-    return 42 + ((p - 0.9) / 0.1) * 18;
+    return 52 + ((p - 0.92) / 0.08) * 20;
   };
 
   // --- GSAP ScrollTrigger Timeline ---
@@ -118,167 +123,152 @@ export default function Hero({ setPath }) {
             }
           },
         },
+        defaults: {
+          ease: "power2.inOut",
+        },
       });
 
-      // ==========================================
-      // PHASE 1 (0% → 15%): Right-Front Tire Close-Up
-      // Tight shot on the right-front wheel, headlights turn on
-      // ==========================================
-      tl.to(animProps.current, {
-        headlightIntensity: 1.0,
-        // Slight pull-back to reveal more of the tire
-        cameraPosX: -2.5,
-        cameraPosY: 0.8,
-        cameraPosZ: 4.0,
-        cameraTarX: -0.8,
-        cameraTarY: 0.3,
-        cameraTarZ: 1.5,
-        duration: 0.15,
-        ease: "power2.inOut",
-      });
+      // Phase 1: right-front detail shot.
+      tl.addLabel("closeUp", 0);
+      tl.addLabel("frontReveal", 0.14);
+      tl.addLabel("orbitBlendIn", 0.28);
+      tl.addLabel("orbitSweep", 0.32);
+      tl.addLabel("leftLock", 0.68);
+      tl.addLabel("launch", 0.76);
+      tl.addLabel("fadeOut", 0.92);
 
-      // ==========================================
-      // PHASE 2 (15% → 35%): Pull Back to Front View
-      // Camera pulls back and centers to reveal the full front
-      // Headline text fades out
-      // ==========================================
       tl.to(
         animProps.current,
         {
-          cameraPosX: -0.5,
-          cameraPosY: 1.6,
-          cameraPosZ: 10.0,
+          headlightIntensity: 1.0,
+          cameraPosX: -2.6,
+          cameraPosY: 0.8,
+          cameraPosZ: 4.2,
+          cameraTarX: -0.8,
+          cameraTarY: 0.3,
+          cameraTarZ: 1.4,
+          duration: 0.14,
+        },
+        "closeUp",
+      );
+
+      // Phase 2: centered front reveal.
+      tl.to(
+        animProps.current,
+        {
+          cameraPosX: 0,
+          cameraPosY: 1.65,
+          cameraPosZ: 10.5,
           cameraTarX: 0,
           cameraTarY: 0.5,
           cameraTarZ: 0,
           cameraFov: 38,
-
           hudOpacity: 0.0,
-
-          duration: 0.2,
-          ease: "power2.inOut",
+          duration: 0.14,
         },
-        0.15,
+        "frontReveal",
       );
 
-      // ==========================================
-      // PHASE 3 (35% → 55%): Right Side Profile (Car faces Left on screen)
-      // Camera orbits to the right side (-X)
-      // We view from the right so the car faces left on screen,
-      // allowing it to exit left when it launches forward.
-      // ==========================================
+      // Phase 3: full orbit, then land on the left-side profile.
       tl.to(
         animProps.current,
         {
-          cameraPosX: -12.0,
-          cameraPosY: 1.5,
-          cameraPosZ: 0.5,
+          cameraOrbitBlend: 1.0,
+          cameraOrbitAngle: 0,
+          cameraOrbitRadius: 10.8,
+          cameraOrbitHeight: 1.55,
+          cameraOrbitTargetX: 0,
+          cameraOrbitTargetY: 0.5,
+          cameraOrbitTargetZ: 0,
+          telemetryOpacity: 1.0,
+          idleVibration: 0.8,
+          rpm: 4200,
+          duration: 0.04,
+          ease: "power1.inOut",
+        },
+        "orbitBlendIn",
+      );
+
+      tl.to(
+        animProps.current,
+        {
+          cameraPosX: 10.8,
+          cameraPosY: 1.55,
+          cameraPosZ: 0,
           cameraTarX: 0,
           cameraTarY: 0.5,
           cameraTarZ: 0,
           cameraFov: 34,
-
-          telemetryOpacity: 1.0,
-          vibration: 1.0,
-          rpm: 4200,
-
-          duration: 0.2,
-          ease: "power1.inOut",
+          duration: 0.36,
+          ease: "none",
         },
-        0.35,
+        "orbitSweep",
       );
 
-      // ==========================================
-      // PHASE 4 (55% → 75%): THE LAUNCH
-      // Car accelerates forward (+Z). Camera tracks from the right.
-      // Car appears to rush toward the LEFT side of the screen.
-      // ==========================================
       tl.to(
         animProps.current,
         {
-          carZ: 22,
-          wheelRotation: 55, // Positive rotation for forward motion
-          carPitch: 0.03, // Nose up slightly during launch
-          vibration: 1.5,
-
-          speed: 220,
-          rpm: 12800,
-          gear: 4,
-
-          // Camera tracking
-          cameraPosX: -8.0,
-          cameraPosY: 1.8,
-          cameraPosZ: 5.0,
-          cameraTarX: 2.0,
-          cameraTarY: 0.4,
-          cameraTarZ: 22.0,
-          cameraFov: 36,
-
-          duration: 0.2,
-          ease: "power2.in",
+          cameraOrbitAngle: Math.PI * 2.5,
+          duration: 0.36,
+          ease: "none",
         },
-        0.55,
+        "orbitSweep",
       );
 
-      // Settle body pitch back
+      // Phase 4: lock the camera on the left side.
+      tl.to(
+        animProps.current,
+        {
+          cameraOrbitBlend: 0.0,
+          idleVibration: 1.0,
+          rpm: 6800,
+          duration: 0.08,
+          ease: "power1.out",
+        },
+        "leftLock",
+      );
+
+      tl.to(
+        animProps.current,
+        {
+          carZ: 52,
+          wheelRotation: 118,
+          carPitch: 0.03,
+          idleVibration: 0.0,
+          launchJitter: 1.0,
+          speed: 318,
+          rpm: 13200,
+          gear: 6,
+          duration: 0.16,
+          ease: "power2.in",
+        },
+        "launch",
+      );
+
+      // Phase 5: the camera stays still while the car drives out.
       tl.to(
         animProps.current,
         {
           carPitch: 0.0,
-          duration: 0.05,
+          duration: 0.04,
           ease: "power1.out",
         },
-        0.7,
+        0.88,
       );
 
-      // ==========================================
-      // PHASE 5 (75% → 90%): Car Exits Left
-      // Car continues forward at high speed. Camera stays
-      // in place, car vanishes to the left of frame.
-      // ==========================================
+      // Phase 6: smoke fade as the car clears frame.
       tl.to(
         animProps.current,
         {
-          carZ: 42,
-          wheelRotation: 90,
-          vibration: 0.6,
-
-          speed: 312,
-          rpm: 13500,
-          gear: 6,
-
-          cameraPosX: -10.0,
-          cameraPosY: 2.0,
-          cameraPosZ: 2.0,
-          cameraTarX: 5.0,
-          cameraTarY: 0.5,
-          cameraTarZ: 45.0,
-          cameraFov: 40,
-
-          duration: 0.15,
-          ease: "power1.out",
-        },
-        0.75,
-      );
-
-      // ==========================================
-      // PHASE 6 (90% → 100%): Fade to Black
-      // ==========================================
-      tl.to(
-        animProps.current,
-        {
-          carZ: 60,
-          wheelRotation: 120,
-
-          cameraTarZ: 65.0,
-
+          carZ: 72,
+          wheelRotation: 152,
+          launchJitter: 0.0,
           telemetryOpacity: 0.0,
           smokeFadeOpacity: 1.0,
-
-          duration: 0.1,
-          ease: "power2.inOut",
+          duration: 0.08,
+          ease: "power2.out",
         },
-        0.9,
+        "fadeOut",
       );
     }, scrollContainerRef);
 

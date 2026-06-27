@@ -1,3 +1,5 @@
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+
 export default function BlogsSection({ setPath, setSelectedBlogId }) {
   const blogs = [
     {
@@ -43,12 +45,9 @@ export default function BlogsSection({ setPath, setSelectedBlogId }) {
           <div>
             <h2 className="section-title">Latest Updates</h2>
           </div>
-          <button className="btn btn-secondary btn-sm header-action-btn" onClick={handleViewAll}>
+          <InteractiveHoverButton onClick={handleViewAll}>
             View All Blogs
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
+          </InteractiveHoverButton>
         </div>
 
         <div className="grid-2 blogs-preview-grid">

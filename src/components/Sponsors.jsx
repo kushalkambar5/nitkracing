@@ -7,6 +7,14 @@ import dinotuneLogo from '../assets/sponsers/dinotune.png';
 import kenestoLogo from '../assets/sponsers/kenesto.png';
 import simscaleLogo from '../assets/sponsers/simscale.png';
 import vishalLogo from '../assets/sponsers/vishal_rubber_technologies.png';
+import ansysLogo from '../assets/sponsers/ansys.png';
+import cumminsLogo from '../assets/sponsers/cummins.png';
+import doshiLogo from '../assets/sponsers/doshi_technologies.jpg';
+import eplanLogo from '../assets/sponsers/e_plan.png';
+import jlcpcbLogo from '../assets/sponsers/jlcpcb.png';
+import kearneyLogo from '../assets/sponsers/kearney_perlab.jpg';
+import questLogo from '../assets/sponsers/quest_global.png';
+import tdpsLogo from '../assets/sponsers/tdps.png';
 
 export default function Sponsors() {
   const sponsorLogos = [
@@ -15,7 +23,15 @@ export default function Sponsors() {
     { src: dinotuneLogo, alt: 'Dinotune', title: 'Dinotune', href: 'https://dinotune.com' },
     { src: kenestoLogo, alt: 'Kenesto', title: 'Kenesto', href: 'https://www.kenesto.com' },
     { src: simscaleLogo, alt: 'SimScale', title: 'SimScale', href: 'https://www.simscale.com' },
-    { src: vishalLogo, alt: 'Vishal Rubber Technologies', title: 'Vishal Rubber Technologies', href: 'http://www.vishalrubber.com' }
+    { src: vishalLogo, alt: 'Vishal Rubber Technologies', title: 'Vishal Rubber Technologies', href: 'http://www.vishalrubber.com' },
+    { src: ansysLogo, alt: 'Ansys', title: 'Ansys', href: 'https://www.ansys.com' },
+    { src: cumminsLogo, alt: 'Cummins', title: 'Cummins', href: 'https://www.cummins.com' },
+    { src: doshiLogo, alt: 'Doshi Technologies', title: 'Doshi Technologies', href: 'http://doshiassociates.net' },
+    { src: eplanLogo, alt: 'EPLAN', title: 'EPLAN', href: 'https://www.eplan-software.com' },
+    { src: jlcpcbLogo, alt: 'JLCPCB', title: 'JLCPCB', href: 'https://jlcpcb.com' },
+    { src: kearneyLogo, alt: 'Kearney PERLab', title: 'Kearney PERLab', href: 'https://www.kearney.com/perlab' },
+    { src: questLogo, alt: 'Quest Global', title: 'Quest Global', href: 'https://www.quest-global.com' },
+    { src: tdpsLogo, alt: 'TD Power Systems', title: 'TD Power Systems', href: 'http://www.tdps.co.in' }
   ];
 
   return (

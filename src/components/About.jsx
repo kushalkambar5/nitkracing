@@ -73,7 +73,7 @@ export default function About() {
           top: 38%;
           transform: translateY(-50%);
           width: 70%;
-          height: 750px;
+          height: 600px;
           display: flex;
           justify-content: center;
           align-items: center;

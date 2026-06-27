@@ -9,8 +9,8 @@ export default function SmokeParticles({ animProps, getCarZAtProgress, count = 1
   const particleData = useMemo(() => {
     const data = [];
     for (let i = 0; i < count; i++) {
-      // Assign each particle a unique activation scroll progress between 0.73 and 0.95
-      const spawnProgress = 0.73 + (i / count) * 0.22;
+      // Spawn smoke only once the left-side lock-off is almost done and the launch begins.
+      const spawnProgress = 0.76 + (i / count) * 0.18;
       
       // Random offsets for dispersion
       const side = i % 2 === 0 ? -1 : 1; // Left or Right wheel
@@ -84,7 +84,7 @@ export default function SmokeParticles({ animProps, getCarZAtProgress, count = 1
 
         // Opacity starts high, fades out
         // Smoke becomes overall denser as scroll progresses
-        const densityFactor = Math.min((scrollProgress - 0.73) / 0.15, 1.0);
+        const densityFactor = Math.min((scrollProgress - 0.76) / 0.12, 1.0);
         opacityAttr.array[i] = (1.0 - age) * 0.45 * densityFactor;
       }
     }

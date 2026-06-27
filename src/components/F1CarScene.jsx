@@ -80,24 +80,21 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
 
     const a = animProps.current;  // live GSAP values
     const time = state.clock.getElapsedTime();
-    const progress = a.progress;
 
     // 1. Position and pitch the car
     if (carRef.current) {
       carRef.current.position.z = a.carZ;
       carRef.current.rotation.x = a.carPitch;
 
-      // Phase 3 (40%-55%): Idle engine suspension vibration
-      if (progress >= 0.4 && progress <= 0.55) {
-        const engineVibY = Math.sin(time * 65) * 0.003 * a.vibration;
-        const engineVibX = Math.cos(time * 55) * 0.0005 * a.vibration;
-        carRef.current.position.y = engineVibY;
-        carRef.current.rotation.z = engineVibX;
-      } else if (progress > 0.55 && progress <= 0.75) {
-        // Phase 4 (55%-75%): Launch jitter
-        const launchJitter = Math.sin(time * 80) * 0.005 * a.vibration;
+      if (a.launchJitter > 0.001) {
+        const launchJitter = Math.sin(time * 80) * 0.005 * a.launchJitter;
         carRef.current.position.y = launchJitter;
         carRef.current.rotation.z = 0;
+      } else if (a.idleVibration > 0.001) {
+        const engineVibY = Math.sin(time * 65) * 0.003 * a.idleVibration;
+        const engineVibX = Math.cos(time * 55) * 0.0005 * a.idleVibration;
+        carRef.current.position.y = engineVibY;
+        carRef.current.rotation.z = engineVibX;
       } else {
         carRef.current.position.y = 0;
         carRef.current.rotation.z = 0;
@@ -112,23 +109,40 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
     // 3. Camera — lerp towards GSAP targets for smooth cinematic motion
     const lerpFactor = 0.08;
     const sc = smoothCam.current;
+    const orbitBlend = THREE.MathUtils.clamp(a.cameraOrbitBlend ?? 0, 0, 1);
+    const orbitAngle = a.cameraOrbitAngle ?? 0;
+    const orbitRadius = a.cameraOrbitRadius ?? 0;
+    const orbitPosX = Math.sin(orbitAngle) * orbitRadius;
+    const orbitPosY = a.cameraOrbitHeight ?? a.cameraPosY;
+    const orbitPosZ = Math.cos(orbitAngle) * orbitRadius;
+    const targetPosX = THREE.MathUtils.lerp(a.cameraPosX, orbitPosX, orbitBlend);
+    const targetPosY = THREE.MathUtils.lerp(a.cameraPosY, orbitPosY, orbitBlend);
+    const targetPosZ = THREE.MathUtils.lerp(a.cameraPosZ, orbitPosZ, orbitBlend);
+    const targetTarX = THREE.MathUtils.lerp(
+      a.cameraTarX,
+      a.cameraOrbitTargetX ?? a.cameraTarX,
+      orbitBlend,
+    );
+    const targetTarY = THREE.MathUtils.lerp(
+      a.cameraTarY,
+      a.cameraOrbitTargetY ?? a.cameraTarY,
+      orbitBlend,
+    );
+    const targetTarZ = THREE.MathUtils.lerp(
+      a.cameraTarZ,
+      a.cameraOrbitTargetZ ?? a.cameraTarZ,
+      orbitBlend,
+    );
 
-    sc.px = THREE.MathUtils.lerp(sc.px, a.cameraPosX, lerpFactor);
-    sc.py = THREE.MathUtils.lerp(sc.py, a.cameraPosY, lerpFactor);
-    sc.pz = THREE.MathUtils.lerp(sc.pz, a.cameraPosZ, lerpFactor);
-    sc.tx = THREE.MathUtils.lerp(sc.tx, a.cameraTarX, lerpFactor);
-    sc.ty = THREE.MathUtils.lerp(sc.ty, a.cameraTarY, lerpFactor);
-    sc.tz = THREE.MathUtils.lerp(sc.tz, a.cameraTarZ, lerpFactor);
+    sc.px = THREE.MathUtils.lerp(sc.px, targetPosX, lerpFactor);
+    sc.py = THREE.MathUtils.lerp(sc.py, targetPosY, lerpFactor);
+    sc.pz = THREE.MathUtils.lerp(sc.pz, targetPosZ, lerpFactor);
+    sc.tx = THREE.MathUtils.lerp(sc.tx, targetTarX, lerpFactor);
+    sc.ty = THREE.MathUtils.lerp(sc.ty, targetTarY, lerpFactor);
+    sc.tz = THREE.MathUtils.lerp(sc.tz, targetTarZ, lerpFactor);
     sc.fov = THREE.MathUtils.lerp(sc.fov, a.cameraFov, lerpFactor);
 
     camera.position.set(sc.px, sc.py, sc.pz);
-
-    // Camera shake during launch (Phase 4: 55%-75%)
-    if (progress > 0.55 && progress < 0.75) {
-      const shakeFactor = (progress - 0.55) / 0.2;
-      camera.position.x += Math.sin(time * 110) * 0.012 * shakeFactor;
-      camera.position.y += Math.cos(time * 95) * 0.012 * shakeFactor;
-    }
 
     camera.fov = sc.fov;
     camera.updateProjectionMatrix();

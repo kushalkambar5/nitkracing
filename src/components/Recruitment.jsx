@@ -1,3 +1,6 @@
+import SpotlightCard from './ui/SpotlightCard';
+import BorderGlow from './ui/BorderGlow';
+
 export default function Recruitment() {
   const recruitments = [
     {
@@ -5,21 +8,30 @@ export default function Recruitment() {
       desc: 'Work on chassis, suspension, powertrain, aerodynamics, and electronics. Perform simulations and fabricate components.',
       formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeCqeluhY2xJ18LewaZGBEw-nHkfD6ISr-ZPqiiJQuc9cy_Ig/viewform',
       requirements: ['Basic mechanics/electronics knowledge', 'Familiarity with CAD/Simulation is a plus', 'Strong problem solving skills'],
-      badgeColor: 'rgba(225, 6, 0, 0.15)'
+      badgeColor: 'rgba(225, 6, 0, 0.15)',
+      glowColor: '2 100 44',
+      colors: ['#E10600', '#FF1E17', '#262630'],
+      spotlightColor: 'rgba(225, 6, 0, 0.15)'
     },
     {
       team: 'Marketing & Business',
       desc: 'Drive crowdfunding campaigns, Pitch to corporate sponsors, draft business reports, and manage budgets.',
       formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSc9hmUE8Y4EIj9XbZubX1_08fgK19zvBf9Di1gNxC9hLGgvJA/viewform?usp=header',
       requirements: ['Excellent pitching & communication skills', 'Basic financial knowledge', 'Creative writing & management interest'],
-      badgeColor: 'rgba(255, 214, 0, 0.1)'
+      badgeColor: 'rgba(255, 214, 0, 0.1)',
+      glowColor: '50 100 50',
+      colors: ['#FFD600', '#FFE55C', '#262630'],
+      spotlightColor: 'rgba(255, 214, 0, 0.12)'
     },
     {
       team: 'Media & Operations',
       desc: 'Run social media channels, create cinematic videos, design decals & livery, and manage merchandise branding.',
       formUrl: 'https://iris.nitk.ac.in/form/nr_media_recs25',
       requirements: ['Proficiency in Adobe Suite/Figma/Canva', 'Video editing & camera handling skills', 'Social media management interest'],
-      badgeColor: 'rgba(0, 229, 255, 0.1)'
+      badgeColor: 'rgba(0, 229, 255, 0.1)',
+      glowColor: '186 100 50',
+      colors: ['#00E5FF', '#66F0FF', '#262630'],
+      spotlightColor: 'rgba(0, 229, 255, 0.15)'
     }
   ];
 
@@ -39,39 +51,56 @@ export default function Recruitment() {
 
         <div className="grid-3 recruitment-grid">
           {recruitments.map((rec, idx) => (
-            <div key={idx} className="card recruitment-card">
-              <div className="card-top-accent" style={{ backgroundColor: rec.badgeColor }}></div>
-              <h3 className="rec-team-name">{rec.team}</h3>
-              <p className="rec-team-desc">{rec.desc}</p>
-              
-              <div className="rec-focus-area">
-                <h4 className="focus-header">Core Requirements:</h4>
-                <ul className="focus-list">
-                  {rec.requirements.map((req, rIdx) => (
-                    <li key={rIdx} className="focus-item">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="3" className="focus-check">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      {req}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <a 
-                href={rec.formUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="btn btn-primary rec-apply-btn"
+            <BorderGlow
+              key={idx}
+              className="recruitment-card-glow-wrapper"
+              edgeSensitivity={30}
+              glowColor={rec.glowColor}
+              backgroundColor="var(--card-bg)"
+              borderRadius={8}
+              glowRadius={40}
+              glowIntensity={0.6}
+              coneSpread={25}
+              animated={true}
+              colors={rec.colors}
+            >
+              <SpotlightCard
+                className="recruitment-card"
+                spotlightColor={rec.spotlightColor}
               >
-                Apply for {rec.team.split(' ')[0]}
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-              </a>
-            </div>
+                <div className="card-top-accent" style={{ backgroundColor: rec.badgeColor }}></div>
+                <h3 className="rec-team-name">{rec.team}</h3>
+                <p className="rec-team-desc">{rec.desc}</p>
+                
+                <div className="rec-focus-area">
+                  <h4 className="focus-header">Core Requirements:</h4>
+                  <ul className="focus-list">
+                    {rec.requirements.map((req, rIdx) => (
+                      <li key={rIdx} className="focus-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="3" className="focus-check">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        {req}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <a 
+                  href={rec.formUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn btn-primary rec-apply-btn"
+                >
+                  Apply for {rec.team.split(' ')[0]}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                </a>
+              </SpotlightCard>
+            </BorderGlow>
           ))}
         </div>
       </div>
@@ -90,6 +119,22 @@ export default function Recruitment() {
           color: var(--text-secondary);
         }
 
+        .recruitment-card-glow-wrapper {
+          transition: var(--transition);
+          border: 1px solid var(--border) !important;
+          background-color: var(--card-bg) !important;
+        }
+
+        .recruitment-card-glow-wrapper:hover {
+          transform: translateY(-4px);
+          box-shadow: var(--shadow);
+          border-color: transparent !important;
+        }
+
+        .recruitment-card-glow-wrapper.sweep-active {
+          border-color: transparent !important;
+        }
+
         .recruitment-card {
           display: flex;
           flex-direction: column;
@@ -97,6 +142,11 @@ export default function Recruitment() {
           text-align: left;
           padding: 36px 28px;
           position: relative;
+          background-color: transparent !important;
+          border: none !important;
+          border-radius: inherit !important;
+          width: 100%;
+          flex-grow: 1;
         }
 
         .card-top-accent {
@@ -105,9 +155,10 @@ export default function Recruitment() {
           left: 0;
           right: 0;
           height: 6px;
+          z-index: 2;
         }
 
-        .recruitment-card:hover .card-top-accent {
+        .recruitment-card-glow-wrapper:hover .card-top-accent {
           background-color: var(--accent) !important;
         }
 
