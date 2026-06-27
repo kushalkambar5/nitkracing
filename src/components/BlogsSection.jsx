@@ -1,28 +1,8 @@
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { blogs as allBlogs } from '../data/blogs';
 
 export default function BlogsSection({ setPath, setSelectedBlogId }) {
-  const blogs = [
-    {
-      id: 'aero-fb25',
-      title: 'Designing Aerodynamics for FB25: CFD Simulation to Reality',
-      excerpt: 'A deep dive into our aerodynamic design workflow. From multi-element wing profile optimization using ANSYS Fluent to carbon-fiber layup in the autoclave.',
-      date: 'June 18, 2026',
-      readTime: '6 min read',
-      category: 'Aerodynamics',
-      author: 'Aditya Rao',
-      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=400&h=250'
-    },
-    {
-      id: 'sponsorship-fs',
-      title: 'Behind the Pitlane: Sourcing Corporate Partnerships in Motorsport',
-      excerpt: 'How a student-run team manages a budget of over 1.5 Million INR. Exploring crowd-funding models, corporate pitches, and keeping the team operations running.',
-      date: 'May 28, 2026',
-      readTime: '5 min read',
-      category: 'Management',
-      author: 'Sneha Hegde',
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=400&h=250'
-    }
-  ];
+  const blogs = allBlogs.slice(0, 2);
 
   const handleBlogClick = (id) => {
     setSelectedBlogId(id);
