@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AnimatedThemeToggler } from './ui/AnimatedThemeToggler';
+import { Pointer } from './ui/pointer';
 
 export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,9 +57,11 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
 
 
           {/* Apply CTA (Desktop) */}
-          <a href="#recruitments" className="btn btn-primary btn-sm nav-apply-btn" onClick={() => handleNavClick('/')}>
-            Apply Now
-          </a>
+          <Pointer style={{ display: "inline-block" }}>
+            <a href="#recruitments" className="btn btn-primary btn-sm nav-apply-btn" onClick={() => handleNavClick('/')}>
+              Apply Now
+            </a>
+          </Pointer>
 
           {/* Mobile Menu Toggle */}
           <button 
@@ -96,9 +99,11 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
               {link.name}
             </button>
           ))}
-          <a href="#recruitments" className="btn btn-primary btn-block mobile-apply-btn" onClick={() => handleNavClick('/')}>
-            Apply Now
-          </a>
+          <Pointer style={{ display: "block", width: "100%" }}>
+            <a href="#recruitments" className="btn btn-primary btn-block mobile-apply-btn" onClick={() => handleNavClick('/')}>
+              Apply Now
+            </a>
+          </Pointer>
         </nav>
       </div>
 

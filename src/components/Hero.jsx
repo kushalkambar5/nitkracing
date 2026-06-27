@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import F1CarScene from "./F1CarScene";
 import carModelUrl from "../assets/f1_car_3d_model.glb?url";
 import loadingSvg from "../assets/loading.svg";
+import { Pointer } from "./ui/pointer";
 
 // Register ScrollTrigger with GSAP (once, at module level)
 gsap.registerPlugin(ScrollTrigger);
@@ -328,22 +329,24 @@ export default function Hero({ setPath }) {
           </p>
 
           <div className="hero-actions">
-            <a href="#recruitments" className="btn btn-primary">
-              Join the Team
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
+            <Pointer style={{ display: "inline-block" }}>
+              <a href="#recruitments" className="btn btn-primary">
+                Join the Team
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </Pointer>
             <button
               className="btn btn-secondary"
               onClick={() => {
