@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { useProgress } from '@react-three/drei';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import F1CarScene from './F1CarScene';
-import carModelUrl from '../assets/f1_car_3d_model.glb?url';
+import React, { useRef, useEffect, useState, Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { useProgress } from "@react-three/drei";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import F1CarScene from "./F1CarScene";
+import carModelUrl from "../assets/f1_car_3d_model.glb?url";
 
 // Register ScrollTrigger with GSAP (once, at module level)
 gsap.registerPlugin(ScrollTrigger);
@@ -42,7 +42,7 @@ export default function Hero({ setPath }) {
     speed: 0,
     rpm: 800,
     gear: 1,
-    smokeFadeOpacity: 0.0
+    smokeFadeOpacity: 0.0,
   });
 
   // Track loading progress
@@ -61,10 +61,10 @@ export default function Hero({ setPath }) {
     if (p <= 0.75) {
       return ((p - 0.55) / 0.2) * 22;
     }
-    if (p <= 0.90) {
+    if (p <= 0.9) {
       return 22 + ((p - 0.75) / 0.15) * 20;
     }
-    return 42 + ((p - 0.90) / 0.1) * 18;
+    return 42 + ((p - 0.9) / 0.1) * 18;
   };
 
   // --- GSAP ScrollTrigger Timeline ---
@@ -75,8 +75,8 @@ export default function Hero({ setPath }) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: scrollContainerRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
+          start: "top 70px",
+          end: "bottom bottom",
           scrub: 1.0,
           pin: viewportRef.current,
           pinSpacing: false,
@@ -84,15 +84,18 @@ export default function Hero({ setPath }) {
             animProps.current.progress = self.progress;
 
             // Direct DOM updates for HUD performance
-            const speedEl = document.getElementById('hud-speed');
-            const rpmEl = document.getElementById('hud-rpm');
-            const gearEl = document.getElementById('hud-gear');
-            const telemetryEl = document.getElementById('hud-telemetry-container');
-            const mainContentEl = document.getElementById('hud-main-content');
-            const smokeFadeEl = document.getElementById('smoke-fade-overlay');
-            const progressLineEl = document.getElementById('hud-progress-line');
+            const speedEl = document.getElementById("hud-speed");
+            const rpmEl = document.getElementById("hud-rpm");
+            const gearEl = document.getElementById("hud-gear");
+            const telemetryEl = document.getElementById(
+              "hud-telemetry-container",
+            );
+            const mainContentEl = document.getElementById("hud-main-content");
+            const smokeFadeEl = document.getElementById("smoke-fade-overlay");
+            const progressLineEl = document.getElementById("hud-progress-line");
 
-            if (speedEl) speedEl.textContent = Math.floor(animProps.current.speed);
+            if (speedEl)
+              speedEl.textContent = Math.floor(animProps.current.speed);
             if (rpmEl) rpmEl.textContent = Math.floor(animProps.current.rpm);
             if (gearEl) gearEl.textContent = Math.floor(animProps.current.gear);
 
@@ -106,13 +109,14 @@ export default function Hero({ setPath }) {
             }
             if (smokeFadeEl) {
               smokeFadeEl.style.opacity = animProps.current.smokeFadeOpacity;
-              smokeFadeEl.style.pointerEvents = animProps.current.smokeFadeOpacity > 0.8 ? 'auto' : 'none';
+              smokeFadeEl.style.pointerEvents =
+                animProps.current.smokeFadeOpacity > 0.8 ? "auto" : "none";
             }
             if (progressLineEl) {
               progressLineEl.style.width = `${self.progress * 100}%`;
             }
-          }
-        }
+          },
+        },
       });
 
       // ==========================================
@@ -129,7 +133,7 @@ export default function Hero({ setPath }) {
         cameraTarY: 0.3,
         cameraTarZ: 1.5,
         duration: 0.15,
-        ease: 'power2.inOut'
+        ease: "power2.inOut",
       });
 
       // ==========================================
@@ -137,20 +141,24 @@ export default function Hero({ setPath }) {
       // Camera pulls back and centers to reveal the full front
       // Headline text fades out
       // ==========================================
-      tl.to(animProps.current, {
-        cameraPosX: -0.5,
-        cameraPosY: 1.6,
-        cameraPosZ: 10.0,
-        cameraTarX: 0,
-        cameraTarY: 0.5,
-        cameraTarZ: 0,
-        cameraFov: 38,
+      tl.to(
+        animProps.current,
+        {
+          cameraPosX: -0.5,
+          cameraPosY: 1.6,
+          cameraPosZ: 10.0,
+          cameraTarX: 0,
+          cameraTarY: 0.5,
+          cameraTarZ: 0,
+          cameraFov: 38,
 
-        hudOpacity: 0.0,
+          hudOpacity: 0.0,
 
-        duration: 0.20,
-        ease: 'power2.inOut'
-      }, 0.15);
+          duration: 0.2,
+          ease: "power2.inOut",
+        },
+        0.15,
+      );
 
       // ==========================================
       // PHASE 3 (35% → 55%): Right Side Profile (Car faces Left on screen)
@@ -158,100 +166,119 @@ export default function Hero({ setPath }) {
       // We view from the right so the car faces left on screen,
       // allowing it to exit left when it launches forward.
       // ==========================================
-      tl.to(animProps.current, {
-        cameraPosX: -12.0,
-        cameraPosY: 1.5,
-        cameraPosZ: 0.5,
-        cameraTarX: 0,
-        cameraTarY: 0.5,
-        cameraTarZ: 0,
-        cameraFov: 34,
+      tl.to(
+        animProps.current,
+        {
+          cameraPosX: -12.0,
+          cameraPosY: 1.5,
+          cameraPosZ: 0.5,
+          cameraTarX: 0,
+          cameraTarY: 0.5,
+          cameraTarZ: 0,
+          cameraFov: 34,
 
-        telemetryOpacity: 1.0,
-        vibration: 1.0,
-        rpm: 4200,
+          telemetryOpacity: 1.0,
+          vibration: 1.0,
+          rpm: 4200,
 
-        duration: 0.20,
-        ease: 'power1.inOut'
-      }, 0.35);
+          duration: 0.2,
+          ease: "power1.inOut",
+        },
+        0.35,
+      );
 
       // ==========================================
       // PHASE 4 (55% → 75%): THE LAUNCH
       // Car accelerates forward (+Z). Camera tracks from the right.
       // Car appears to rush toward the LEFT side of the screen.
       // ==========================================
-      tl.to(animProps.current, {
-        carZ: 22,
-        wheelRotation: 55, // Positive rotation for forward motion
-        carPitch: 0.03, // Nose up slightly during launch
-        vibration: 1.5,
+      tl.to(
+        animProps.current,
+        {
+          carZ: 22,
+          wheelRotation: 55, // Positive rotation for forward motion
+          carPitch: 0.03, // Nose up slightly during launch
+          vibration: 1.5,
 
-        speed: 220,
-        rpm: 12800,
-        gear: 4,
+          speed: 220,
+          rpm: 12800,
+          gear: 4,
 
-        // Camera tracking
-        cameraPosX: -8.0,
-        cameraPosY: 1.8,
-        cameraPosZ: 5.0,
-        cameraTarX: 2.0,
-        cameraTarY: 0.4,
-        cameraTarZ: 22.0,
-        cameraFov: 36,
+          // Camera tracking
+          cameraPosX: -8.0,
+          cameraPosY: 1.8,
+          cameraPosZ: 5.0,
+          cameraTarX: 2.0,
+          cameraTarY: 0.4,
+          cameraTarZ: 22.0,
+          cameraFov: 36,
 
-        duration: 0.20,
-        ease: 'power2.in'
-      }, 0.55);
+          duration: 0.2,
+          ease: "power2.in",
+        },
+        0.55,
+      );
 
       // Settle body pitch back
-      tl.to(animProps.current, {
-        carPitch: 0.0,
-        duration: 0.05,
-        ease: 'power1.out'
-      }, 0.70);
+      tl.to(
+        animProps.current,
+        {
+          carPitch: 0.0,
+          duration: 0.05,
+          ease: "power1.out",
+        },
+        0.7,
+      );
 
       // ==========================================
       // PHASE 5 (75% → 90%): Car Exits Left
       // Car continues forward at high speed. Camera stays
       // in place, car vanishes to the left of frame.
       // ==========================================
-      tl.to(animProps.current, {
-        carZ: 42,
-        wheelRotation: 90,
-        vibration: 0.6,
+      tl.to(
+        animProps.current,
+        {
+          carZ: 42,
+          wheelRotation: 90,
+          vibration: 0.6,
 
-        speed: 312,
-        rpm: 13500,
-        gear: 6,
+          speed: 312,
+          rpm: 13500,
+          gear: 6,
 
-        cameraPosX: -10.0,
-        cameraPosY: 2.0,
-        cameraPosZ: 2.0,
-        cameraTarX: 5.0,
-        cameraTarY: 0.5,
-        cameraTarZ: 45.0,
-        cameraFov: 40,
+          cameraPosX: -10.0,
+          cameraPosY: 2.0,
+          cameraPosZ: 2.0,
+          cameraTarX: 5.0,
+          cameraTarY: 0.5,
+          cameraTarZ: 45.0,
+          cameraFov: 40,
 
-        duration: 0.15,
-        ease: 'power1.out'
-      }, 0.75);
+          duration: 0.15,
+          ease: "power1.out",
+        },
+        0.75,
+      );
 
       // ==========================================
       // PHASE 6 (90% → 100%): Fade to Black
       // ==========================================
-      tl.to(animProps.current, {
-        carZ: 60,
-        wheelRotation: 120,
+      tl.to(
+        animProps.current,
+        {
+          carZ: 60,
+          wheelRotation: 120,
 
-        cameraTarZ: 65.0,
+          cameraTarZ: 65.0,
 
-        telemetryOpacity: 0.0,
-        smokeFadeOpacity: 1.0,
+          telemetryOpacity: 0.0,
+          smokeFadeOpacity: 1.0,
 
-        duration: 0.10,
-        ease: 'power2.inOut'
-      }, 0.90);
-
+          duration: 0.1,
+          ease: "power2.inOut",
+        },
+        0.9,
+      );
     }, scrollContainerRef);
 
     return () => ctx.revert();
@@ -269,19 +296,31 @@ export default function Hero({ setPath }) {
             </div>
 
             <div className="loader-bar-container">
-              <div className="loader-bar" style={{ width: `${progress}%` }}></div>
+              <div
+                className="loader-bar"
+                style={{ width: `${progress}%` }}
+              ></div>
             </div>
 
             <div className="loader-diagnostics">
-              <div className="diag-line">LOADING 3D ENGINE MESHES ... {progress === 100 ? 'OK' : 'PENDING'}</div>
-              <div className="diag-line">STABILIZING SUSPENSION SYSTEM ... {progress > 60 ? 'OK' : 'PENDING'}</div>
-              <div className="diag-line">CALIBRATING TELEMETRY LINK ... {progress > 30 ? 'OK' : 'PENDING'}</div>
-              <div className="diag-line accent-text font-bold">BOOT SEQUENCE COMPLETE: SCROLL TO INITIALIZE LAUNCH</div>
+              <div className="diag-line">
+                LOADING 3D ENGINE MESHES ...{" "}
+                {progress === 100 ? "OK" : "PENDING"}
+              </div>
+              <div className="diag-line">
+                STABILIZING SUSPENSION SYSTEM ...{" "}
+                {progress > 60 ? "OK" : "PENDING"}
+              </div>
+              <div className="diag-line">
+                CALIBRATING TELEMETRY LINK ...{" "}
+                {progress > 30 ? "OK" : "PENDING"}
+              </div>
+              <div className="diag-line accent-text font-bold">
+                BOOT SEQUENCE COMPLETE: SCROLL TO INITIALIZE LAUNCH
+              </div>
             </div>
 
-            <div className="loader-percentage">
-              {Math.floor(progress)}%
-            </div>
+            <div className="loader-percentage">{Math.floor(progress)}%</div>
           </div>
         </div>
       )}
@@ -304,7 +343,10 @@ export default function Hero({ setPath }) {
         </Canvas>
 
         {/* 3. Headline Text Overlay (fades out in Phase 2) */}
-        <div id="hud-main-content" className="hud-layer container main-content-layer">
+        <div
+          id="hud-main-content"
+          className="hud-layer container main-content-layer"
+        >
           <div className="hero-eyebrow">
             <div className="chevron-decor">
               <span></span>
@@ -315,105 +357,57 @@ export default function Hero({ setPath }) {
           </div>
 
           <h1 className="hero-title">
-            Built by students.<br />
+            Built by students.
+            <br />
             <span className="accent-text">Driven by passion.</span>
           </h1>
 
           <p className="hero-description">
-            NITKRacing is the official Formula Student team of NITK Surathkal. We design, manufacture, and test high-performance formula racecars to compete globally.
+            NITKRacing is the official Formula Student team of NITK Surathkal.
+            We design, manufacture, and test high-performance formula racecars
+            to compete globally.
           </p>
 
           <div className="hero-actions">
             <a href="#recruitments" className="btn btn-primary">
               Join the Team
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </a>
-            <button className="btn btn-secondary" onClick={() => { setPath('/achievements'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+            <button
+              className="btn btn-secondary"
+              onClick={() => {
+                setPath("/achievements");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
               Our Legacy
             </button>
           </div>
 
           <div className="scroll-indicator">
             <span className="indicator-arrow">↓</span>
-            <span className="indicator-text">SCROLL TO LAUNCH</span>
-          </div>
-        </div>
-
-        {/* 4. Telemetry HUD (fades in during Phase 2) */}
-        <div id="hud-telemetry-container" className="hud-layer telemetry-layer" style={{ opacity: 0 }}>
-          <div className="telemetry-top">
-            <span className="telemetry-logo">NITKRACING // TELEMETRY</span>
-            <span className="telemetry-status-tag">
-              <span className="pulse-dot"></span>
-              LIVE
-            </span>
-          </div>
-
-          <div className="telemetry-left">
-            <div className="telemetry-card">
-              <div className="card-header">VEHICLE DIAGNOSTICS</div>
-              <div className="diag-grid">
-                <span className="diag-label">ENGINE TEMP</span>
-                <span className="diag-val">92°C</span>
-                <span className="diag-label">OIL PRESS</span>
-                <span className="diag-val">4.2 BAR</span>
-                <span className="diag-label">FUEL FLOW</span>
-                <span className="diag-val">85 KG/H</span>
-                <span className="diag-label">BATTERY</span>
-                <span className="diag-val">12.8V</span>
-              </div>
-            </div>
-            <div className="telemetry-card tech-specs">
-              <div className="card-header">NR26 SPEC SHEET</div>
-              <div className="spec-row"><span>CHASSIS</span><span>Spaceframe Tubular</span></div>
-              <div className="spec-row"><span>ENGINE</span><span>600cc Single-Cyl</span></div>
-              <div className="spec-row"><span>WEIGHT</span><span>195 kg</span></div>
-              <div className="spec-row"><span>0-100</span><span>3.2s</span></div>
-            </div>
-          </div>
-
-          <div className="telemetry-right">
-            <div className="telemetry-gauge">
-              <span className="gauge-label">SPEED</span>
-              <div className="gauge-value">
-                <span id="hud-speed">0</span>
-                <span className="gauge-unit">KM/H</span>
-              </div>
-            </div>
-            <div className="telemetry-gauge">
-              <span className="gauge-label">RPM</span>
-              <div className="gauge-value small-gauge">
-                <span id="hud-rpm">800</span>
-              </div>
-              <div className="rpm-bar-container">
-                <div className="rpm-bar" id="hud-progress-line" style={{ background: 'linear-gradient(90deg, #E10600, #ff4444)' }}></div>
-              </div>
-            </div>
-            <div className="telemetry-gauge">
-              <span className="gauge-label">GEAR</span>
-              <div className="gauge-value">
-                <span id="hud-gear">1</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="telemetry-bottom">
-            <div className="timeline-labels">
-              <span>PHASE: ANTICIPATION</span>
-              <span>SCROLL PROGRESS</span>
-              <span>LAUNCH SEQUENCE</span>
-            </div>
-            <div className="timeline-track">
-              <div className="timeline-progress" id="hud-progress-line" style={{ width: '0%' }}></div>
-            </div>
+            <span className="indicator-text">SCROLL</span>
           </div>
         </div>
 
         {/* 5. Smoke Fade Transition Overlay (Phase 6) */}
-        <div id="smoke-fade-overlay" className="smoke-fade-transition-layer" style={{ opacity: 0, pointerEvents: 'none' }}></div>
+        <div
+          id="smoke-fade-overlay"
+          className="smoke-fade-transition-layer"
+          style={{ opacity: 0, pointerEvents: "none" }}
+        ></div>
       </div>
 
       <style>{`
@@ -421,12 +415,13 @@ export default function Hero({ setPath }) {
           position: relative;
           height: 500vh; /* 5 viewports of scroll-controlled animation */
           background-color: #030305;
+          padding: 0;
         }
 
         .hero-pinned-viewport {
           /* NO position: sticky — ScrollTrigger pins this via position: fixed */
           width: 100%;
-          height: 100vh;
+          height: calc(100vh - 70px);
           overflow: hidden;
           background-color: #030305;
           z-index: 1;
