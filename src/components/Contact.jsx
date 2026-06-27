@@ -65,8 +65,6 @@ export default function Contact() {
             <div className="map-placeholder-card">
               <div className="checkered-pattern"></div>
               <div className="map-locator">
-                <span className="locator-pulse"></span>
-                <span className="locator-icon">📍</span>
               </div>
               <div className="map-details">
                 <div className="map-title">NITK Surathkal, Srinivasnagar</div>

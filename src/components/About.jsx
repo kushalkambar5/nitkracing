@@ -1,3 +1,5 @@
+import ModelViewer from './ModelViewer';
+
 export default function About() {
   return (
     <section id="about" className="about-section">
@@ -26,6 +28,20 @@ export default function About() {
               We design not just race cars, but careers. From raw tubes to the starting grid, every weld and line of code is driven by pure engineering passion.
             </div>
           </div>
+
+          {/* Right Panel: 3D Model Viewer */}
+          <div className="about-visual">
+            <ModelViewer
+              url="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/ToyCar/glTF-Binary/ToyCar.glb"
+              width="100%"
+              height="100%"
+              autoRotate={false}
+              fadeIn={true}
+              environmentPreset="forest"
+              autoFrame={true}
+              enableManualZoom={false}
+            />
+          </div>
         </div>
       </div>
 
@@ -34,15 +50,33 @@ export default function About() {
           background-color: var(--bg-secondary);
           border-top: 1px solid var(--border);
           border-bottom: 1px solid var(--border);
+          overflow: hidden;
+          position: relative;
         }
 
         .about-grid {
-          max-width: 800px;
-          margin: 0 auto;
+          position: relative;
+          min-height: 550px;
         }
 
         .about-content {
           text-align: left;
+          position: relative;
+          z-index: 2;
+          width: 58%;
+        }
+
+        .about-visual {
+          position: absolute;
+          right: -10%;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 70%;
+          height: 750px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1;
         }
 
         .about-subtitle {
@@ -83,8 +117,32 @@ export default function About() {
           opacity: 0.1;
           color: var(--accent);
         }
+
+        @media (max-width: 992px) {
+          .about-grid {
+            min-height: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+          }
+
+          .about-content {
+            width: 100%;
+          }
+
+          .about-visual {
+            position: relative;
+            right: auto;
+            top: auto;
+            transform: none;
+            width: 100%;
+            height: 450px;
+            margin-top: 20px;
+          }
+        }
       `}</style>
     </section>
   );
 }
+
 

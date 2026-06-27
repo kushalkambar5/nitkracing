@@ -50,7 +50,7 @@ export default function Footer({ setPath }) {
             <h4 className="footer-header">Explore</h4>
             <div className="footer-links">
               <button onClick={() => handleNavClick('/')}>Home</button>
-              <button onClick={() => handleNavClick('/teams')}>Team Roster</button>
+              <button onClick={() => handleNavClick('/teams')}>Team</button>
               <button onClick={() => handleNavClick('/achievements')}>Achievements</button>
             </div>
           </div>
@@ -71,7 +71,7 @@ export default function Footer({ setPath }) {
             <p className="footer-univ-text">
               National Institute of Technology Karnataka, Surathkal
             </p>
-            <span className="footer-location-tag">📍 Mangaluru, India</span>
+            <span className="footer-location-tag">Mangaluru, India</span>
           </div>
         </div>
 
