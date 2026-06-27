@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import F1CarScene from "./F1CarScene";
 import carModelUrl from "../assets/f1_car_3d_model.glb?url";
+import loadingSvg from "../assets/loading.svg";
 
 // Register ScrollTrigger with GSAP (once, at module level)
 gsap.registerPlugin(ScrollTrigger);
@@ -289,39 +290,7 @@ export default function Hero({ setPath }) {
       {/* 1. Loading Overlay */}
       {loading && (
         <div className="telemetry-loader">
-          <div className="loader-hud">
-            <div className="loader-header">
-              <span className="accent-text">NITKRACING // CORE_ECU</span>
-              <span className="loader-status">BOOTING SYSTEM...</span>
-            </div>
-
-            <div className="loader-bar-container">
-              <div
-                className="loader-bar"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-
-            <div className="loader-diagnostics">
-              <div className="diag-line">
-                LOADING 3D ENGINE MESHES ...{" "}
-                {progress === 100 ? "OK" : "PENDING"}
-              </div>
-              <div className="diag-line">
-                STABILIZING SUSPENSION SYSTEM ...{" "}
-                {progress > 60 ? "OK" : "PENDING"}
-              </div>
-              <div className="diag-line">
-                CALIBRATING TELEMETRY LINK ...{" "}
-                {progress > 30 ? "OK" : "PENDING"}
-              </div>
-              <div className="diag-line accent-text font-bold">
-                BOOT SEQUENCE COMPLETE: SCROLL TO INITIALIZE LAUNCH
-              </div>
-            </div>
-
-            <div className="loader-percentage">{Math.floor(progress)}%</div>
-          </div>
+          <img src={loadingSvg} alt="Loading..." className="loader-svg" />
         </div>
       )}
 
@@ -448,67 +417,22 @@ export default function Hero({ setPath }) {
           position: fixed;
           inset: 0;
           z-index: 100;
-          background-color: #030305;
+          background-color: #000000;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 24px;
         }
 
-        .loader-hud {
+        html[data-theme="light"] .telemetry-loader {
+          background-color: #ffffff;
+        }
+
+        .loader-svg {
           width: 100%;
-          max-width: 600px;
-          border: 1px solid var(--border);
-          background: rgba(10, 10, 15, 0.95);
-          padding: 30px;
-          border-radius: var(--border-radius-md);
-          font-family: var(--font-mono);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-        }
-
-        .loader-header {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 20px;
-          font-size: 0.9rem;
-          letter-spacing: 1px;
-        }
-
-        .loader-bar-container {
-          height: 4px;
-          background-color: rgba(255, 255, 255, 0.05);
-          margin-bottom: 25px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .loader-bar {
-          height: 100%;
-          background-color: var(--accent);
-          transition: width 0.1s ease-out;
-          box-shadow: 0 0 10px var(--accent);
-        }
-
-        .loader-diagnostics {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          font-size: 0.75rem;
-          color: var(--text-muted);
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          padding-top: 20px;
-          margin-bottom: 15px;
-        }
-
-        .diag-line {
-          letter-spacing: 0.5px;
-        }
-
-        .loader-percentage {
-          text-align: right;
-          font-size: 2rem;
-          font-weight: 700;
-          color: var(--text-primary);
+          max-width: 800px;
+          height: auto;
+          display: block;
         }
 
         /* Initial Headline Layer */
