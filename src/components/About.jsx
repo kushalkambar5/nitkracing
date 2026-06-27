@@ -39,6 +39,7 @@ export default function About() {
               fadeIn={true}
               environmentPreset="forest"
               autoFrame={true}
+              autoFrameFactor={0.25}
               enableManualZoom={false}
             />
           </div>
@@ -56,7 +57,7 @@ export default function About() {
 
         .about-grid {
           position: relative;
-          min-height: 550px;
+          min-height: 680px;
         }
 
         .about-content {
@@ -69,7 +70,7 @@ export default function About() {
         .about-visual {
           position: absolute;
           right: -10%;
-          top: 50%;
+          top: 38%;
           transform: translateY(-50%);
           width: 70%;
           height: 750px;

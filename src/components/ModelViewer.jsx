@@ -73,6 +73,7 @@ const ModelInner = ({
   enableHoverRotation,
   enableManualZoom,
   autoFrame,
+  autoFrameFactor = 0.5,
   fadeIn,
   autoRotate,
   autoRotateSpeed,
@@ -126,7 +127,7 @@ const ModelInner = ({
     if (autoFrame && camera.isPerspectiveCamera) {
       const persp = camera;
       const fitR = sphere.radius * s;
-      const d = (fitR * 0.5) / Math.sin((persp.fov * Math.PI) / 180 / 2); // 0.5 makes it fill the screen nicely
+      const d = (fitR * autoFrameFactor) / Math.sin((persp.fov * Math.PI) / 180 / 2);
       persp.position.set(0, 0, d);
       persp.lookAt(pivotW.current);
       persp.near = d / 10;
@@ -375,6 +376,7 @@ const ModelViewer = ({
   rimLightIntensity = 0.8,
   environmentPreset = 'forest',
   autoFrame = false,
+  autoFrameFactor = 0.5,
   placeholderSrc,
   fadeIn = false,
   autoRotate = false,
@@ -433,6 +435,7 @@ const ModelViewer = ({
             enableHoverRotation={enableHoverRotation}
             enableManualZoom={enableManualZoom}
             autoFrame={autoFrame}
+            autoFrameFactor={autoFrameFactor}
             fadeIn={fadeIn}
             autoRotate={autoRotate}
             autoRotateSpeed={autoRotateSpeed}
