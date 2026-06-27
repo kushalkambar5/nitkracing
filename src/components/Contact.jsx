@@ -1,14 +1,19 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // In a real application, you would send this to a backend/email API.
     setSubmitted(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setFormData({ name: "", email: "", subject: "", message: "" });
     setTimeout(() => setSubmitted(false), 5000);
   };
 
@@ -30,33 +35,57 @@ export default function Contact() {
           <div className="contact-details-col">
             <h3 className="contact-sub-title">Get in Touch</h3>
             <p className="contact-intro-text">
-              Have questions about sponsorship, recruitment, or our racing projects? Drop us a line, and we will get back to you as soon as possible.
+              Have questions about sponsorship, recruitment, or our racing
+              projects? Drop us a line, and we will get back to you as soon as
+              possible.
             </p>
 
             <div className="contact-info-list">
               <div className="contact-info-item">
                 <div className="info-icon-wrapper">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
                 </div>
                 <div>
                   <h4 className="info-label">Our Workshop</h4>
-                  <p className="info-val">Mechanical Engineering Block, NITK Surathkal, Srinivasnagar, Mangaluru, India - 575025</p>
+                  <p className="info-val">
+                    Mechanical Engineering Block, NITK Surathkal, Mangaluru,
+                    India - 575025
+                  </p>
                 </div>
               </div>
 
               <div className="contact-info-item">
                 <div className="info-icon-wrapper">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
                 </div>
                 <div>
                   <h4 className="info-label">Email Address</h4>
-                  <a href="mailto:nitkracing@nitk.edu.in" className="info-val info-link">nitkracing@nitk.edu.in</a>
+                  <a
+                    href="mailto:nitkracing@nitk.edu.in"
+                    className="info-val info-link"
+                  >
+                    nitkracing@nitk.edu.in
+                  </a>
                 </div>
               </div>
             </div>
@@ -64,8 +93,7 @@ export default function Contact() {
             {/* Simulated Map Placeholder */}
             <div className="map-placeholder-card">
               <div className="checkered-pattern"></div>
-              <div className="map-locator">
-              </div>
+              <div className="map-locator"></div>
               <div className="map-details">
                 <div className="map-title">NITK Surathkal, Srinivasnagar</div>
                 <div className="map-coords">13.0108° N, 74.7943° E</div>
@@ -76,10 +104,18 @@ export default function Contact() {
           {/* Right Column: Contact Form */}
           <div className="contact-form-col card">
             <h3 className="form-heading">Send a Message</h3>
-            
+
             {submitted && (
               <div className="submission-alert">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="alert-check">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="alert-check"
+                >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
                 Message sent successfully! We will get back to you soon.
@@ -90,60 +126,67 @@ export default function Contact() {
               <div className="form-group-row">
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    value={formData.name} 
-                    onChange={handleChange} 
-                    placeholder="Enter your name" 
-                    required 
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter your name"
+                    required
                   />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    value={formData.email} 
-                    onChange={handleChange} 
-                    placeholder="Enter your email" 
-                    required 
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    required
                   />
                 </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="subject">Subject</label>
-                <input 
-                  type="text" 
-                  id="subject" 
-                  name="subject" 
-                  value={formData.subject} 
-                  onChange={handleChange} 
-                  placeholder="Enter message subject" 
-                  required 
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder="Enter message subject"
+                  required
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="message">Message</label>
-                <textarea 
-                  id="message" 
-                  name="message" 
-                  value={formData.message} 
-                  onChange={handleChange} 
-                  placeholder="Type your message here..." 
-                  rows="5" 
-                  required 
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Type your message here..."
+                  rows="5"
+                  required
                 ></textarea>
               </div>
 
               <button type="submit" className="btn btn-primary form-submit-btn">
                 Send Message
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
                   <line x1="22" y1="2" x2="11" y2="13"></line>
                   <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>

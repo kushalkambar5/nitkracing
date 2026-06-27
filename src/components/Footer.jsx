@@ -1,87 +1,143 @@
 export default function Footer({ setPath }) {
   const handleNavClick = (path) => {
     setPath(path);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <footer className="footer-container">
       <div className="container">
-        <div className="footer-grid">
-          {/* Brand Col */}
-          <div className="footer-brand-col">
-            <div className="footer-logo" onClick={() => handleNavClick('/')}>
-              <span className="brand-name">
-                NITK<span className="accent-text">Racing</span>
-              </span>
+        {/* Top Nav Row */}
+        <div className="footer-nav-row">
+          <div className="footer-nav-col">
+            <h3 className="nav-col-header">Explore</h3>
+            <div className="nav-col-links">
+              <button onClick={() => handleNavClick("/")}>Home</button>
+              <button onClick={() => handleNavClick("/teams")}>Team</button>
+              <button onClick={() => handleNavClick("/achievements")}>
+                Achievements
+              </button>
             </div>
-            <p className="footer-tagline">
-              More than a team. It's a legacy in motion.
-            </p>
-            
-            {/* Socials */}
-            <div className="footer-socials">
-              <a href="https://www.instagram.com/nitkracing/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-              </a>
+          </div>
 
-              <a href="https://www.linkedin.com/company/nitkracing/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                  <rect x="2" y="9" width="4" height="12"></rect>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-              </a>
-
-              <a href="https://m.facebook.com/nitkracing" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                </svg>
+          <div className="footer-nav-col">
+            <h3 className="nav-col-header">Media & Info</h3>
+            <div className="nav-col-links">
+              <button onClick={() => handleNavClick("/gallery")}>
+                Gallery
+              </button>
+              <button onClick={() => handleNavClick("/blogs")}>
+                Blogs & Articles
+              </button>
+              <a href="#about" onClick={() => handleNavClick("/")}>
+                About the Club
               </a>
             </div>
           </div>
 
-          {/* Links Col 1 */}
-          <div className="footer-links-col">
-            <h4 className="footer-header">Explore</h4>
-            <div className="footer-links">
-              <button onClick={() => handleNavClick('/')}>Home</button>
-              <button onClick={() => handleNavClick('/teams')}>Team</button>
-              <button onClick={() => handleNavClick('/achievements')}>Achievements</button>
+          <div className="footer-nav-col">
+            <h3 className="nav-col-header">University</h3>
+            <div className="nav-col-links">
+              <a
+                href="https://www.nitk.ac.in"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                NITK Surathkal
+              </a>
+              <a
+                href="https://maps.google.com/?q=NITK+Surathkal"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Surathkal, Mangaluru, Karnataka, India
+              </a>
             </div>
-          </div>
-
-          {/* Links Col 2 */}
-          <div className="footer-links-col">
-            <h4 className="footer-header">Media & Info</h4>
-            <div className="footer-links">
-              <button onClick={() => handleNavClick('/Gallery')}>Gallery</button>
-              <button onClick={() => handleNavClick('/blogs')}>Blogs & Tech Articles</button>
-              <a href="#about" onClick={() => handleNavClick('/')}>About the Club</a>
-            </div>
-          </div>
-
-          {/* Legal / Dev Col */}
-          <div className="footer-links-col">
-            <h4 className="footer-header">University</h4>
-            <p className="footer-univ-text">
-              National Institute of Technology Karnataka, Surathkal
-            </p>
-            <span className="footer-location-tag">Mangaluru, India</span>
           </div>
         </div>
 
-        <div className="footer-bottom">
-          <p className="copyright-text">
-            © {new Date().getFullYear()} NITK Racing. All rights reserved.
-          </p>
-          <p className="developer-text">
-            Formula Student Combustion & Electric Racing Team
-          </p>
+        {/* Middle Meta Row */}
+        <div className="footer-meta-row">
+          <div className="footer-meta-left">
+            <p className="footer-tagline">
+              More than a team. It's a legacy in motion.
+            </p>
+            <p className="footer-copyright">
+              © {new Date().getFullYear()} NITK Racing.
+            </p>
+          </div>
+          <div className="footer-meta-right">
+            <a
+              href="https://www.instagram.com/nitkracing/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon-link instagram"
+              aria-label="Instagram"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+              </svg>
+            </a>
+            <a
+              href="https://www.linkedin.com/company/nitkracing/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon-link linkedin"
+              aria-label="LinkedIn"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="4.9" cy="4" r="2" />
+                <rect x="2.9" y="8" width="4" height="12" />
+                <path d="M21 20h-4v-5.5c0-3-3.5-2.8-3.5 0V20h-4V8h4v1.9c1.6-2.5 7.5-2.8 7.5 2.6V20z" />
+              </svg>
+            </a>
+            <a
+              href="https://m.facebook.com/nitkracing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon-link facebook"
+              aria-label="Facebook"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom Giant Logo Row */}
+        <div className="brand-signature" aria-label="NITK Racing">
+          <div className="brand-part nitk-part">
+            <div className="shapes-row">
+              <span className="shape-item circle-shape">
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                  <circle cx="50" cy="50" r="35" />
+                </svg>
+              </span>
+              <span className="shape-item octagon-shape">
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                  <polygon points="30,15 70,15 85,30 85,70 70,85 30,85 15,70 15,30" />
+                </svg>
+              </span>
+              <span className="shape-item hexagon-shape">
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                  <polygon points="50,15 85,35 85,65 50,85 15,65 15,35" />
+                </svg>
+              </span>
+              <span className="shape-item square-shape">
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                  <rect x="20" y="20" width="60" height="60" />
+                </svg>
+              </span>
+            </div>
+            <span className="brand-text">nitk</span>
+          </div>
+          <div className="brand-part racing-part">
+            <div className="bar-row">
+              <div className="brand-bar"></div>
+            </div>
+            <span className="brand-text">racing</span>
+          </div>
         </div>
       </div>
 
@@ -89,145 +145,292 @@ export default function Footer({ setPath }) {
         .footer-container {
           background-color: var(--bg-primary);
           border-top: 1px solid var(--border);
-          padding: 60px 0 30px;
+          padding: 80px 0 40px;
           text-align: left;
+          overflow: hidden;
+          transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
-        .footer-grid {
+        .footer-nav-row {
           display: grid;
-          grid-template-columns: 1.5fr 1fr 1fr 1fr;
-          gap: 40px;
-          margin-bottom: 40px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 60px;
+          margin-bottom: 80px;
         }
 
-        .footer-brand-col {
+        .nav-col-header {
+          font-family: var(--font-secondary);
+          font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+          font-weight: 700;
+          text-transform: none;
+          letter-spacing: -0.03em;
+          color: var(--text-primary);
+          margin-bottom: 24px;
+          line-height: 1.1;
+        }
+
+        .nav-col-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px 28px;
+        }
+
+        .nav-col-links a, .nav-col-links button {
+          font-family: var(--font-secondary);
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          text-decoration: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          transition: color 0.2s ease, transform 0.2s ease;
+          display: inline-block;
+        }
+
+        .nav-col-links a:hover, .nav-col-links button:hover {
+          color: var(--accent);
+          transform: translateY(-1px);
+        }
+
+        .footer-meta-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          border-top: 1px solid var(--border);
+          padding-top: 40px;
+          margin-bottom: 40px;
+          flex-wrap: wrap;
+          gap: 30px;
+        }
+
+        .footer-meta-left {
           display: flex;
           flex-direction: column;
-          gap: 16px;
-        }
-
-        .footer-logo {
-          cursor: pointer;
-        }
-
-        .footer-logo .brand-name {
-          font-family: var(--font-primary);
-          font-size: 1.6rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          color: var(--text-primary);
-        }
-
-        .footer-logo .brand-name .accent-text {
-          color: var(--accent);
-          font-style: italic;
+          gap: 8px;
+          max-width: 650px;
         }
 
         .footer-tagline {
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-          max-width: 250px;
+          font-family: var(--font-secondary);
+          font-size: 1.15rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0;
         }
 
-        .footer-socials {
+        .footer-copyright {
+          font-family: var(--font-secondary);
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        .footer-meta-right {
           display: flex;
-          gap: 12px;
-          margin-top: 8px;
-        }
-
-        .footer-socials a {
-          width: 36px;
-          height: 36px;
-          border-radius: var(--border-radius-sm);
-          border: 1px solid var(--border);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--text-secondary);
-          transition: var(--transition);
-        }
-
-        .footer-socials a:hover {
-          color: var(--accent);
-          border-color: var(--accent);
-          background-color: var(--accent-soft);
-          transform: translateY(-2px);
-        }
-
-        .footer-links-col {
-          display: flex;
-          flex-direction: column;
           gap: 16px;
         }
 
-        .footer-header {
-          font-size: 1rem;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          color: var(--text-primary);
+        .social-icon-link {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          border: 1px solid var(--border);
+          background-color: var(--bg-secondary);
+          color: var(--text-secondary);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .footer-links {
+        .social-icon-link svg {
+          width: 18px;
+          height: 18px;
+          transition: transform 0.3s ease;
+        }
+
+        .social-icon-link:hover {
+          transform: translateY(-2px);
+        }
+
+        .social-icon-link:hover svg {
+          transform: scale(1.12);
+        }
+
+        /* Hover States for Instagram, LinkedIn, and Facebook */
+        .social-icon-link.instagram:hover {
+          color: #E1306C;
+          border-color: #E1306C;
+          background-color: rgba(225, 48, 108, 0.08);
+          box-shadow: 0 0 15px rgba(225, 48, 108, 0.15);
+        }
+
+        .social-icon-link.linkedin:hover {
+          color: #0A66C2;
+          border-color: #0A66C2;
+          background-color: rgba(10, 102, 194, 0.08);
+          box-shadow: 0 0 15px rgba(10, 102, 194, 0.15);
+        }
+
+        .social-icon-link.facebook:hover {
+          color: #1877F2;
+          border-color: #1877F2;
+          background-color: rgba(24, 119, 242, 0.08);
+          box-shadow: 0 0 15px rgba(24, 119, 242, 0.15);
+        }
+
+        /* Bottom Giant Logo Row */
+        .brand-signature {
+          display: flex;
+          align-items: flex-end;
+          width: 100%;
+          justify-content: flex-start;
+          margin-top: 40px;
+          line-height: 0.8;
+          user-select: none;
+          color: var(--text-primary);
+          gap: 1.5vw;
+          padding-top: 20px;
+          font-size: clamp(2rem, 11.5vw, 14.5rem);
+        }
+
+        .brand-part {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          justify-content: flex-end;
         }
 
-        .footer-links button, .footer-links a {
-          background: none;
-          border: none;
-          color: var(--text-secondary);
-          font-family: var(--font-secondary);
-          font-size: 0.9rem;
-          cursor: pointer;
-          text-align: left;
-          width: fit-content;
-          transition: var(--transition);
+        .racing-part {
+          flex-grow: 1;
         }
 
-        .footer-links button:hover, .footer-links a:hover {
-          color: var(--accent);
-          transform: translateX(4px);
-        }
-
-        .footer-univ-text {
-          font-size: 0.85rem;
-          color: var(--text-secondary);
-          line-height: 1.4;
-        }
-
-        .footer-location-tag {
-          font-family: var(--font-mono);
-          font-size: 0.75rem;
-          color: var(--text-muted);
-        }
-
-        .footer-bottom {
-          border-top: 1px solid var(--border);
-          padding-top: 24px;
+        .shapes-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          font-size: 0.8rem;
-          color: var(--text-muted);
+          width: 100%;
+          height: 0.18em;
+          margin-bottom: 0.12em;
+          padding: 0 0.05em;
         }
 
+        .shape-item {
+          width: 0.18em;
+          height: 0.18em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--text-primary);
+          transition: color 0.3s ease;
+        }
+
+        .shape-item svg {
+          width: 100%;
+          height: 100%;
+          transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .bar-row {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          height: 0.18em;
+          margin-bottom: 0.12em;
+        }
+
+        .brand-bar {
+          width: 100%;
+          height: 0.08em;
+          background-color: var(--text-primary);
+          transition: background-color 0.3s ease, transform 0.3s ease;
+          transform-origin: left;
+        }
+
+        .brand-text {
+          font-family: var(--font-secondary);
+          font-size: 1em;
+          font-weight: 800;
+          letter-spacing: -0.05em;
+          text-transform: lowercase;
+          line-height: 1;
+          display: inline-block;
+        }
+
+        /* Hover Interactions */
+        .brand-signature:hover .brand-bar {
+          background-color: var(--accent);
+          transform: scaleY(1.2);
+        }
+
+        .brand-signature:hover .shape-item {
+          color: var(--accent);
+        }
+
+        .brand-signature:hover .circle-shape svg {
+          transform: scale(1.15);
+        }
+
+        .brand-signature:hover .octagon-shape svg {
+          transform: rotate(45deg);
+        }
+
+        .brand-signature:hover .hexagon-shape svg {
+          transform: rotate(-30deg);
+        }
+
+        .brand-signature:hover .square-shape svg {
+          transform: scale(0.9) rotate(90deg);
+        }
+
+        /* Responsiveness */
         @media (max-width: 992px) {
-          .footer-grid {
+          .footer-nav-row {
             grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+            gap: 40px;
+            margin-bottom: 60px;
           }
         }
 
-        @media (max-width: 576px) {
-          .footer-grid {
-            grid-template-columns: 1fr;
+        @media (max-width: 768px) {
+          .footer-container {
+            padding: 60px 0 30px;
           }
-          .footer-bottom {
+          .footer-nav-row {
+            grid-template-columns: 1fr;
+            gap: 32px;
+            margin-bottom: 50px;
+          }
+          .nav-col-header {
+            margin-bottom: 16px;
+          }
+          .footer-meta-row {
             flex-direction: column;
-            gap: 12px;
-            text-align: center;
+            align-items: flex-start;
+            gap: 24px;
+            padding-top: 30px;
+            margin-bottom: 30px;
+          }
+          .footer-meta-right {
+            width: 100%;
+            justify-content: flex-start;
+            gap: 16px;
+          }
+          .brand-signature {
+            margin-top: 30px;
+            gap: 2vw;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .nav-col-links {
+            gap: 8px 16px;
+          }
+          .footer-meta-right {
+            flex-direction: row;
+            gap: 16px;
           }
         }
       `}</style>
