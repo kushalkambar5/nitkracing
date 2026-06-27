@@ -5,7 +5,7 @@ export default function About() {
     <section id="about" className="about-section">
       <div className="speed-lines"></div>
       
-      <div className="container">
+      <div className="container about-container">
         <div className="about-grid">
           {/* Left Panel: Content */}
           <div className="about-content">
@@ -53,11 +53,16 @@ export default function About() {
           border-bottom: 1px solid var(--border);
           overflow: hidden;
           position: relative;
+          padding-bottom: 20px;
+        }
+
+        .about-container {
+          max-width: 92%;
         }
 
         .about-grid {
           position: relative;
-          min-height: 680px;
+          min-height: 520px;
         }
 
         .about-content {
@@ -70,7 +75,7 @@ export default function About() {
         .about-visual {
           position: absolute;
           right: -10%;
-          top: 38%;
+          top: 50%;
           transform: translateY(-50%);
           width: 70%;
           height: 600px;

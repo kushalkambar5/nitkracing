@@ -114,6 +114,7 @@ export default function Departments() {
       <style>{`
         .departments-section {
           background-color: var(--bg-primary);
+          padding-top: 40px;
         }
 
         .section-intro {
