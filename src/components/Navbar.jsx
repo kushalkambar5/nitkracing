@@ -23,11 +23,7 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
         {/* Brand Logo */}
         <div className="navbar-brand" onClick={() => handleNavClick('/')}>
           <span className="brand-logo-mark">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 17L6 7H9L5 17H2Z" fill="var(--accent)" />
-              <path d="M8 17L12 7H15L11 17H8Z" fill="var(--text-primary)" />
-              <path d="M14 17L18 7H21L17 17H14Z" fill="var(--text-muted)" />
-            </svg>
+            <img src="/logo_circle.png" alt="NITK Racing Logo" />
           </span>
           <span className="brand-name">
             NITK<span className="accent-text">Racing</span>
@@ -156,6 +152,12 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
           align-items: center;
           width: 32px;
           height: 32px;
+        }
+
+        .brand-logo-mark img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
 
         .brand-name {
