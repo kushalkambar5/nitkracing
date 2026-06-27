@@ -39,7 +39,7 @@ export default function About() {
               fadeIn={true}
               environmentPreset="forest"
               autoFrame={true}
-              autoFrameFactor={0.25}
+              autoFrameFactor={0.5}
               enableManualZoom={false}
             />
           </div>

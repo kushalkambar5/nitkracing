@@ -155,7 +155,7 @@ export default function Contact() {
 
       <style>{`
         .contact-section {
-          background-color: var(--bg-secondary);
+          background-color: var(--bg-primary);
           border-top: 1px solid var(--border);
         }
 
@@ -237,7 +237,7 @@ export default function Contact() {
         .map-placeholder-card {
           flex-grow: 1;
           min-height: 180px;
-          background-color: var(--bg-primary);
+          background-color: var(--bg-secondary);
           border: 1px solid var(--border);
           border-radius: var(--border-radius-md);
           position: relative;

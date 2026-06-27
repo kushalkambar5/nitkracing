@@ -9,6 +9,7 @@ import GallerySection from './components/GallerySection';
 import Sponsors from './components/Sponsors';
 import Recruitment from './components/Recruitment';
 import BlogsSection from './components/BlogsSection';
+import Chronicles from './components/Chronicles';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
@@ -96,6 +97,7 @@ function App() {
               setPath={navigateTo} 
               setSelectedBlogId={setSelectedBlogId} 
             />
+            <Chronicles />
             <Contact />
           </>
         );
