@@ -1,122 +1,142 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import About from './components/About';
+import Departments from './components/Departments';
+import MainTeam from './components/MainTeam';
+import Achievements from './components/Achievements';
+import GallerySection from './components/GallerySection';
+import Sponsors from './components/Sponsors';
+import Recruitment from './components/Recruitment';
+import BlogsSection from './components/BlogsSection';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+
+// Subpages
+import TeamsPage from './pages/TeamsPage';
+import AchievementsPage from './pages/AchievementsPage';
+import GalleryPage from './pages/GalleryPage';
+import BlogsPage from './pages/BlogsPage';
+
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Theme state: default is dark, saved in localStorage
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved || 'dark';
+  });
+
+  // Simple state router. Read pathname, default to '/'
+  const [path, setPath] = useState(() => {
+    // Strip trailing slashes or subfolder prefix to make it robust
+    const p = window.location.pathname;
+    return p === '/' ? '/' : p;
+  });
+
+  // Selected blog ID for deep linking from Homepage blogs to BlogsPage read view
+  const [selectedBlogId, setSelectedBlogId] = useState(null);
+
+  // Sync theme with document class/attributes
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // Sync pathname router with popstate browser actions (forward/back buttons)
+  useEffect(() => {
+    const handlePopState = () => {
+      setPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Setter function that also pushes state to history
+  const navigateTo = (newPath) => {
+    window.history.pushState(null, '', newPath);
+    setPath(newPath);
+  };
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  // Route selector
+  const renderContent = () => {
+    const normalizedPath = path.toLowerCase();
+    
+    switch (normalizedPath) {
+      case '/teams':
+        return <TeamsPage />;
+      case '/achievements':
+        return <AchievementsPage />;
+      case '/gallery':
+        return <GalleryPage />;
+      case '/blogs':
+        return (
+          <BlogsPage 
+            selectedBlogId={selectedBlogId} 
+            setSelectedBlogId={setSelectedBlogId} 
+          />
+        );
+      default:
+        // Homepage Story Line structure
+        return (
+          <>
+            <Hero setPath={navigateTo} />
+            <About />
+            <Departments />
+            <MainTeam setPath={navigateTo} />
+            <Achievements setPath={navigateTo} />
+            <GallerySection setPath={navigateTo} />
+            <Sponsors />
+            <Recruitment />
+            <BlogsSection 
+              setPath={navigateTo} 
+              setSelectedBlogId={setSelectedBlogId} 
+            />
+            <Contact />
+          </>
+        );
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app-shell">
+      {/* Navigation Header */}
+      <Navbar 
+        currentPath={path} 
+        setPath={navigateTo} 
+        theme={theme} 
+        toggleTheme={toggleTheme} 
+      />
 
-      <div className="ticks"></div>
+      {/* Main View Area */}
+      <main className="main-content">
+        {renderContent()}
+      </main>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* Footer Branding Area */}
+      <Footer setPath={navigateTo} />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <style>{`
+        .app-shell {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+          background-color: var(--bg-primary);
+          color: var(--text-primary);
+          transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .main-content {
+          flex-grow: 1;
+          width: 100%;
+        }
+      `}</style>
+    </div>
+  );
 }
 
-export default App
+export default App;

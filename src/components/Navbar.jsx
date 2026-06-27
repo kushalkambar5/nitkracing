@@ -1,0 +1,316 @@
+import { useState } from 'react';
+
+export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Team', path: '/teams' },
+    { name: 'Achievements', path: '/achievements' },
+    { name: 'Gallery', path: '/Gallery' },
+    { name: 'Blogs', path: '/blogs' },
+  ];
+
+  const handleNavClick = (path) => {
+    setPath(path);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <header className="navbar-header">
+      <div className="container navbar-container">
+        {/* Brand Logo */}
+        <div className="navbar-brand" onClick={() => handleNavClick('/')}>
+          <span className="brand-logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 17L6 7H9L5 17H2Z" fill="var(--accent)" />
+              <path d="M8 17L12 7H15L11 17H8Z" fill="var(--text-primary)" />
+              <path d="M14 17L18 7H21L17 17H14Z" fill="var(--text-muted)" />
+            </svg>
+          </span>
+          <span className="brand-name">
+            NITK<span className="accent-text">Racing</span>
+          </span>
+        </div>
+
+        {/* Desktop Nav Links */}
+        <nav className="desktop-nav">
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              className={`nav-link-btn ${currentPath === link.path ? 'active' : ''}`}
+              onClick={() => handleNavClick(link.path)}
+            >
+              {link.name}
+            </button>
+          ))}
+        </nav>
+
+        {/* Right Action Area */}
+        <div className="navbar-actions">
+          {/* Theme Toggle */}
+          <button 
+            className="theme-toggle-btn" 
+            onClick={toggleTheme} 
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              // Sun Icon
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            ) : (
+              // Moon Icon
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            )}
+          </button>
+
+          {/* Apply CTA (Desktop) */}
+          <a href="#recruitments" className="btn btn-primary btn-sm nav-apply-btn" onClick={() => handleNavClick('/')}>
+            Apply Now
+          </a>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="mobile-toggle-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle Menu"
+          >
+            {mobileMenuOpen ? (
+              // Close Icon
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              // Hamburger Icon
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Nav Menu Drawer */}
+      <div className={`mobile-nav-drawer ${mobileMenuOpen ? 'open' : ''}`}>
+        <nav className="mobile-nav">
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              className={`mobile-nav-link ${currentPath === link.path ? 'active' : ''}`}
+              onClick={() => handleNavClick(link.path)}
+            >
+              {link.name}
+            </button>
+          ))}
+          <a href="#recruitments" className="btn btn-primary btn-block mobile-apply-btn" onClick={() => handleNavClick('/')}>
+            Apply Now
+          </a>
+        </nav>
+      </div>
+
+      <style>{`
+        .navbar-header {
+          position: sticky;
+          top: 0;
+          height: var(--header-height);
+          background-color: var(--nav-bg);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--border);
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          transition: var(--transition);
+        }
+
+        .navbar-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .navbar-brand {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          user-select: none;
+        }
+
+        .brand-logo-mark {
+          display: flex;
+          align-items: center;
+          width: 32px;
+          height: 32px;
+        }
+
+        .brand-name {
+          font-family: var(--font-primary);
+          font-size: 1.6rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: var(--text-primary);
+        }
+
+        .brand-name .accent-text {
+          color: var(--accent);
+          font-style: italic;
+        }
+
+        .desktop-nav {
+          display: flex;
+          gap: 32px;
+        }
+
+        .nav-link-btn {
+          font-family: var(--font-primary);
+          font-weight: 600;
+          font-size: 1.05rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: var(--text-secondary);
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 8px 0;
+          position: relative;
+          transition: var(--transition);
+        }
+
+        .nav-link-btn:hover, .nav-link-btn.active {
+          color: var(--accent);
+        }
+
+        .nav-link-btn::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background-color: var(--accent);
+          transition: var(--transition);
+        }
+
+        .nav-link-btn:hover::after, .nav-link-btn.active::after {
+          width: 100%;
+        }
+
+        .navbar-actions {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .theme-toggle-btn {
+          background: none;
+          border: 1px solid var(--border);
+          border-radius: var(--border-radius-sm);
+          width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--text-primary);
+          cursor: pointer;
+          transition: var(--transition);
+        }
+
+        .theme-toggle-btn:hover {
+          color: var(--accent);
+          border-color: var(--accent);
+          background-color: var(--accent-soft);
+        }
+
+        .nav-apply-btn {
+          height: 36px;
+          display: flex;
+          align-items: center;
+        }
+
+        .mobile-toggle-btn {
+          display: none;
+          background: none;
+          border: none;
+          color: var(--text-primary);
+          cursor: pointer;
+        }
+
+        /* Mobile Nav Drawer */
+        .mobile-nav-drawer {
+          position: fixed;
+          top: var(--header-height);
+          left: 0;
+          width: 100vw;
+          height: calc(100vh - var(--header-height));
+          background-color: var(--bg-primary);
+          z-index: 999;
+          transform: translateX(100%);
+          transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border-top: 1px solid var(--border);
+        }
+
+        .mobile-nav-drawer.open {
+          transform: translateX(0);
+        }
+
+        .mobile-nav {
+          display: flex;
+          flex-direction: column;
+          padding: 40px 24px;
+          gap: 24px;
+        }
+
+        .mobile-nav-link {
+          font-family: var(--font-primary);
+          font-size: 1.5rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          color: var(--text-primary);
+          background: none;
+          border: none;
+          cursor: pointer;
+          text-align: left;
+          padding: 8px 0;
+          border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-nav-link:hover, .mobile-nav-link.active {
+          color: var(--accent);
+          border-bottom-color: var(--accent);
+        }
+
+        .mobile-apply-btn {
+          margin-top: 16px;
+          width: 100%;
+        }
+
+        @media (max-width: 768px) {
+          .desktop-nav, .nav-apply-btn {
+            display: none;
+          }
+          .mobile-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      `}</style>
+    </header>
+  );
+}
