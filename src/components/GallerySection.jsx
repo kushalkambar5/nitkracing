@@ -72,6 +72,15 @@ export default function GallerySection({ setPath }) {
             height: 450px;
           }
         }
+
+        @media (max-width: 480px) {
+          .dome-gallery-wrapper {
+            height: 320px;
+          }
+          .gallery-section {
+            padding: 48px 0;
+          }
+        }
       `}</style>
     </section>
   );

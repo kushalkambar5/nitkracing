@@ -254,6 +254,19 @@ export default function Departments() {
             gap: 20px;
           }
         }
+
+        @media (max-width: 480px) {
+          .dept-name {
+            font-size: 1.15rem;
+          }
+          .dept-desc {
+            font-size: 0.88rem;
+          }
+          .dept-icon-wrapper {
+            width: 40px;
+            height: 40px;
+          }
+        }
       `}</style>
     </section>
   );

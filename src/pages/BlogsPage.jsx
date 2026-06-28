@@ -357,6 +357,16 @@ export default function BlogsPage({ selectedBlogId, setSelectedBlogId }) {
             grid-template-columns: 1fr;
           }
         }
+
+        @media (max-width: 480px) {
+          .reading-title {
+            font-size: 1.7rem;
+          }
+          .reading-body-content p,
+          .reading-body-content li {
+            font-size: 0.95rem;
+          }
+        }
       `}</style>
     </div>
   );

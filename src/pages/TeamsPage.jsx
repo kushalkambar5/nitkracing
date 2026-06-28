@@ -158,6 +158,21 @@ export default function TeamsPage() {
             font-size: 0.9rem;
           }
         }
+
+        @media (max-width: 480px) {
+          .tab-btn-wrapper {
+            padding: 6px 8px !important;
+          }
+          .tab-label-text {
+            font-size: 0.78rem;
+          }
+          .teams-content-section {
+            padding-top: 48px;
+          }
+          .tabs-card-wrapper {
+            padding: 16px;
+          }
+        }
       `}</style>
     </div>
   );

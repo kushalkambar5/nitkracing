@@ -345,6 +345,31 @@ section {
   }
 }
 
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+  section {
+    padding: 48px 0;
+  }
+  .section-title {
+    font-size: 1.6rem;
+  }
+  .section-title-center {
+    font-size: 1.6rem;
+    margin-bottom: 32px;
+  }
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Snappier touch response on interactive elements */
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
 /* MagicUI Animated Theme Toggler View Transitions */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -360,3 +385,12 @@ html[data-magicui-theme-vt="active"]::view-transition-new(root) {
   clip-path: var(--magicui-theme-vt-clip-from);
 }
 
+/* ---- Accessibility & Performance: Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

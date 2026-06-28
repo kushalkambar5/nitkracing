@@ -1,4 +1,7 @@
 import CircularGallery from './CircularGallery';
+import { isMobileDevice } from '../utils/performance';
+
+const IS_MOBILE = isMobileDevice();
 
 // Import all 12 images from chronicles directory
 import img1 from '../assets/chronicles/Kethan_ajmeera.jpg';
@@ -42,6 +45,8 @@ export default function Chronicles() {
           borderRadius={0.05}
           scrollEase={0.03}
           font="bold 28px Rajdhani"
+          heightSegments={IS_MOBILE ? 20 : 50}
+          widthSegments={IS_MOBILE ? 40 : 100}
         />
       </div>
 
@@ -70,6 +75,21 @@ export default function Chronicles() {
           margin-top: -30px;
           position: relative;
           z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+          .circular-gallery-container-full {
+            height: 420px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .circular-gallery-container-full {
+            height: 280px;
+          }
+          .chronicles-section {
+            padding: 40px 0 60px 0;
+          }
         }
       `}</style>
     </section>

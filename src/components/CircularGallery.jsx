@@ -408,13 +408,17 @@ class App {
       borderRadius = 0,
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
-      scrollEase = 0.05
+      scrollEase = 0.05,
+      heightSegments = 50,
+      widthSegments = 100
     } = {}
   ) {
     document.documentElement.classList.remove('no-js');
     this.container = container;
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
+    this.heightSegments = heightSegments;
+    this.widthSegments = widthSegments;
     this.onCheckDebounce = debounce(this.onCheck, 200);
     this.createRenderer();
     this.createCamera();
@@ -445,8 +449,8 @@ class App {
   }
   createGeometry() {
     this.planeGeometry = new Plane(this.gl, {
-      heightSegments: 50,
-      widthSegments: 100
+      heightSegments: this.heightSegments,
+      widthSegments: this.widthSegments
     });
   }
   createMedias(items, bend = 1, textColor, borderRadius, font) {
@@ -613,7 +617,9 @@ export default function CircularGallery({
   font = 'bold 30px Figtree',
   fontUrl,
   scrollSpeed = 2,
-  scrollEase = 0.05
+  scrollEase = 0.05,
+  heightSegments = 50,
+  widthSegments = 100
 }) {
   const containerRef = useRef(null);
   useEffect(() => {
@@ -629,7 +635,9 @@ export default function CircularGallery({
         borderRadius,
         font: resolvedFont,
         scrollSpeed,
-        scrollEase
+        scrollEase,
+        heightSegments,
+        widthSegments
       });
     });
 

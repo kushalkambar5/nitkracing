@@ -449,6 +449,15 @@ export default function Footer({ setPath }) {
             flex-direction: row;
             gap: 16px;
           }
+          .brand-signature {
+            gap: 1vw;
+          }
+          .footer-tagline {
+            font-size: 1rem;
+          }
+          .footer-copyright {
+            font-size: 0.8rem;
+          }
         }
       `}</style>
     </footer>

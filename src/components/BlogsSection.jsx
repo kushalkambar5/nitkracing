@@ -192,6 +192,20 @@ export default function BlogsSection({ setPath, setSelectedBlogId }) {
             gap: 20px;
           }
         }
+
+        @media (max-width: 480px) {
+          .blog-card-title {
+            font-size: 1.1rem;
+          }
+          .blog-card-excerpt {
+            font-size: 0.85rem;
+          }
+          .blog-card-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+          }
+        }
       `}</style>
     </section>
   );

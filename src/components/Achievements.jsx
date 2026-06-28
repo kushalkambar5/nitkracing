@@ -111,6 +111,15 @@ export default function Achievements({ setPath }) {
             gap: 20px;
           }
         }
+
+        @media (max-width: 480px) {
+          .ach-title {
+            font-size: 1.1rem;
+          }
+          .ach-desc {
+            font-size: 0.8rem;
+          }
+        }
       `}</style>
     </section>
   );

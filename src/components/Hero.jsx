@@ -7,6 +7,10 @@ import F1CarScene from "./F1CarScene";
 import carModelUrl from "../assets/f1_car_3d_model.glb?url";
 import loadingSvg from "../assets/loading.svg";
 import { Pointer } from "./ui/pointer";
+import { isMobileDevice } from "../utils/performance";
+
+// Resolved once at module load — safe since window is available in browser
+const IS_MOBILE = isMobileDevice();
 
 // Register ScrollTrigger with GSAP (once, at module level)
 gsap.registerPlugin(ScrollTrigger);
@@ -297,10 +301,15 @@ export default function Hero({ setPath }) {
 
       {/* 2. Pinned Viewport — ScrollTrigger will pin this */}
       <div ref={viewportRef} className="hero-pinned-viewport">
-        {/* Three.js WebGL Canvas */}
+        {/* Three.js WebGL Canvas — performance props gated for mobile */}
         <Canvas
           shadows
-          gl={{ antialias: true, alpha: false }}
+          gl={{
+            antialias: !IS_MOBILE,
+            alpha: false,
+            powerPreference: IS_MOBILE ? 'low-power' : 'high-performance',
+          }}
+          dpr={IS_MOBILE ? [1, 1] : [1, 2]}
           className="hero-canvas"
         >
           <Suspense fallback={null}>
@@ -308,6 +317,9 @@ export default function Hero({ setPath }) {
               modelUrl={carModelUrl}
               animProps={animProps}
               getCarZAtProgress={getCarZAtProgress}
+              performanceMode={IS_MOBILE}
+              dustCount={IS_MOBILE ? 60 : 200}
+              smokeCount={IS_MOBILE ? 80 : 250}
             />
           </Suspense>
         </Canvas>
@@ -510,6 +522,7 @@ export default function Hero({ setPath }) {
         .hero-actions {
           display: flex;
           gap: 16px;
+          flex-wrap: wrap;
         }
 
         .scroll-indicator {
@@ -787,6 +800,32 @@ export default function Hero({ setPath }) {
           }
           .hero-title {
             font-size: 2.5rem;
+          }
+          .hero-description {
+            font-size: 1rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-title {
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+          }
+          .hero-description {
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+          }
+          .hero-eyebrow {
+            margin-bottom: 16px;
+          }
+          .eyebrow-text {
+            font-size: 0.75rem;
+          }
+          .hero-actions {
+            gap: 10px;
+          }
+          .scroll-indicator {
+            bottom: 24px;
           }
         }
       `}</style>

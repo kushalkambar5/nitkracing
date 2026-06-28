@@ -257,6 +257,18 @@ export default function Recruitment() {
             gap: 20px;
           }
         }
+
+        @media (max-width: 480px) {
+          .rec-team-name {
+            font-size: 1.2rem;
+          }
+          .rec-team-desc {
+            font-size: 0.85rem;
+          }
+          .recruitment-card {
+            padding: 20px 16px;
+          }
+        }
       `}</style>
     </section>
   );

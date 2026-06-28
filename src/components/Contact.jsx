@@ -679,6 +679,27 @@ export default function Contact() {
             font-size: 1.5rem;
           }
         }
+
+        @media (max-width: 480px) {
+          .contact-sub-title {
+            font-size: 1.3rem;
+          }
+          .contact-intro-text {
+            font-size: 0.9rem;
+          }
+          .contact-form-col {
+            padding: 20px 14px;
+          }
+          .key-contacts-heading {
+            font-size: 1.6rem;
+          }
+          .reveal-label {
+            font-size: 1.3rem;
+          }
+          .reveal-meta {
+            padding-left: 56px;
+          }
+        }
       `}</style>
     </section>
   );

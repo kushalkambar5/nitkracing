@@ -1,4 +1,7 @@
 import ModelViewer from './ModelViewer';
+import { isMobileDevice } from '../utils/performance';
+
+const IS_MOBILE = isMobileDevice();
 
 export default function About() {
   return (
@@ -29,20 +32,22 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right Panel: 3D Model Viewer */}
-          <div className="about-visual">
-            <ModelViewer
-              url="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/ToyCar/glTF-Binary/ToyCar.glb"
-              width="100%"
-              height="100%"
-              autoRotate={false}
-              fadeIn={true}
-              environmentPreset="forest"
-              autoFrame={true}
-              autoFrameFactor={0.5}
-              enableManualZoom={false}
-            />
-          </div>
+          {/* Right Panel: 3D Model Viewer (desktop only — too GPU-heavy for mobile) */}
+          {!IS_MOBILE && (
+            <div className="about-visual">
+              <ModelViewer
+                url="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/ToyCar/glTF-Binary/ToyCar.glb"
+                width="100%"
+                height="100%"
+                autoRotate={false}
+                fadeIn={true}
+                environmentPreset="forest"
+                autoFrame={true}
+                autoFrameFactor={0.5}
+                enableManualZoom={false}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -144,6 +149,19 @@ export default function About() {
             width: 100%;
             height: 450px;
             margin-top: 20px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .about-subtitle {
+            font-size: 1.6rem;
+          }
+          .about-text {
+            font-size: 0.95rem;
+          }
+          .about-quote {
+            padding: 14px 16px;
+            font-size: 0.9rem;
           }
         }
       `}</style>

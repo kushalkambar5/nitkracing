@@ -486,6 +486,22 @@ export default function GalleryPage() {
             font-size: 0.85rem;
           }
         }
+
+        @media (max-width: 480px) {
+          .gallery-main-title {
+            font-size: 1.8rem;
+          }
+          .gallery-main-subtitle {
+            font-size: 0.9rem;
+          }
+          .infinite-menu-container {
+            height: 55vh;
+            min-height: 360px;
+          }
+          .gallery-header-section {
+            padding-bottom: 24px;
+          }
+        }
       `}</style>
     </div>
   );

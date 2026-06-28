@@ -504,6 +504,19 @@ export default function AchievementsPage() {
             border-left-width: 4px;
           }
         }
+
+        @media (max-width: 480px) {
+          .timeline-node {
+            padding-left: 40px !important;
+            margin-bottom: 40px;
+          }
+          .event-detail-card {
+            padding: 16px;
+          }
+          .event-title {
+            font-size: 1.1rem;
+          }
+        }
       `}</style>
     </div>
   );

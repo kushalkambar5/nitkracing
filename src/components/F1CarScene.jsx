@@ -13,7 +13,7 @@ import { TIMINGS, CAR_GEOMETRY } from './Hero';
  * This bypasses the React prop pipeline entirely so useFrame always
  * sees the latest interpolated values at 60 fps.
  */
-export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
+export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress, performanceMode = false, dustCount = 200, smokeCount = 250 }) {
   const { scene: originalScene } = useGLTF(modelUrl);
   const scene = useMemo(() => {
     const cloned = originalScene.clone();
@@ -346,7 +346,7 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
         position={[-6, 8, 6]}
         intensity={3.5}
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={performanceMode ? [512, 512] : [2048, 2048]}
         shadow-bias={-0.0005}
       />
 
@@ -377,8 +377,8 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
           angle={0.5}
           penumbra={0.8}
           color="#ffffff"
-          castShadow
-          shadow-mapSize={[1024, 1024]}
+          castShadow={!performanceMode}
+          shadow-mapSize={performanceMode ? [512, 512] : [1024, 1024]}
           shadow-bias={-0.0001}
           target={headlightTarget}
         />
@@ -429,13 +429,13 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
       </mesh>
 
       {/* Ambient Floating Dust */}
-      <DustParticles count={200} />
+      <DustParticles count={dustCount} />
 
       {/* Tire Smoke — reads live scroll & time properties */}
       <SmokeParticles
         animProps={animProps}
         getCarZAtProgress={getCarZAtProgress}
-        count={250}
+        count={smokeCount}
       />
     </>
   );
