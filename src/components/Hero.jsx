@@ -11,17 +11,39 @@ import { Pointer } from "./ui/pointer";
 // Register ScrollTrigger with GSAP (once, at module level)
 gsap.registerPlugin(ScrollTrigger);
 
+// Animation Timing & Spatial Constants
+export const TIMINGS = {
+  CLOSE_UP: 0,
+  FRONT_REVEAL: 0.14,
+  ORBIT_BLEND_IN: 0.28,
+  ORBIT_SWEEP: 0.32,
+  LEFT_LOCK: 0.68,
+  LAUNCH: 0.76,
+  FADE_OUT: 0.92,
+};
+
+export const CAR_GEOMETRY = {
+  MAX_Z: 52,
+  FINAL_Z: 72,
+};
+
 export default function Hero({ setPath }) {
   const scrollContainerRef = useRef(null);
   const viewportRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const { active, progress } = useProgress();
 
+  // HUD Element Refs
+  const mainContentRef = useRef(null);
+  const smokeFadeRef = useRef(null);
+
+
   // Shared mutable ref — GSAP writes to this, R3F useFrame reads it.
   // This bypasses React's prop/render system for 60fps animation.
   const animProps = useRef({
     progress: 0,
     carZ: 0,
+    carRotY: Math.PI,
     wheelRotation: 0,
     carPitch: 0,
     headlightIntensity: 0.0,
@@ -67,11 +89,13 @@ export default function Hero({ setPath }) {
 
   // Interpolation for car Z — used by smoke particles
   const getCarZAtProgress = (p) => {
-    if (p <= 0.76) return 0;
-    if (p <= 0.92) {
-      return ((p - 0.76) / 0.16) * 52;
+    if (p <= TIMINGS.LAUNCH) return 0;
+    if (p <= TIMINGS.FADE_OUT) {
+      const t = (p - TIMINGS.LAUNCH) / (TIMINGS.FADE_OUT - TIMINGS.LAUNCH);
+      return t * CAR_GEOMETRY.MAX_Z;
     }
-    return 52 + ((p - 0.92) / 0.08) * 20;
+    const t = (p - TIMINGS.FADE_OUT) / (1.0 - TIMINGS.FADE_OUT);
+    return CAR_GEOMETRY.MAX_Z + t * (CAR_GEOMETRY.FINAL_Z - CAR_GEOMETRY.MAX_Z);
   };
 
   // --- GSAP ScrollTrigger Timeline ---
@@ -90,37 +114,14 @@ export default function Hero({ setPath }) {
           onUpdate: (self) => {
             animProps.current.progress = self.progress;
 
-            // Direct DOM updates for HUD performance
-            const speedEl = document.getElementById("hud-speed");
-            const rpmEl = document.getElementById("hud-rpm");
-            const gearEl = document.getElementById("hud-gear");
-            const telemetryEl = document.getElementById(
-              "hud-telemetry-container",
-            );
-            const mainContentEl = document.getElementById("hud-main-content");
-            const smokeFadeEl = document.getElementById("smoke-fade-overlay");
-            const progressLineEl = document.getElementById("hud-progress-line");
-
-            if (speedEl)
-              speedEl.textContent = Math.floor(animProps.current.speed);
-            if (rpmEl) rpmEl.textContent = Math.floor(animProps.current.rpm);
-            if (gearEl) gearEl.textContent = Math.floor(animProps.current.gear);
-
-            if (telemetryEl) {
-              telemetryEl.style.opacity = animProps.current.telemetryOpacity;
-              telemetryEl.style.transform = `translateY(${(1.0 - animProps.current.telemetryOpacity) * 20}px)`;
+            if (mainContentRef.current) {
+              mainContentRef.current.style.opacity = animProps.current.hudOpacity;
+              mainContentRef.current.style.transform = `translateY(${(animProps.current.hudOpacity - 1.0) * -20}px)`;
             }
-            if (mainContentEl) {
-              mainContentEl.style.opacity = animProps.current.hudOpacity;
-              mainContentEl.style.transform = `translateY(${(animProps.current.hudOpacity - 1.0) * -20}px)`;
-            }
-            if (smokeFadeEl) {
-              smokeFadeEl.style.opacity = animProps.current.smokeFadeOpacity;
-              smokeFadeEl.style.pointerEvents =
+            if (smokeFadeRef.current) {
+              smokeFadeRef.current.style.opacity = animProps.current.smokeFadeOpacity;
+              smokeFadeRef.current.style.pointerEvents =
                 animProps.current.smokeFadeOpacity > 0.8 ? "auto" : "none";
-            }
-            if (progressLineEl) {
-              progressLineEl.style.width = `${self.progress * 100}%`;
             }
           },
         },
@@ -129,15 +130,16 @@ export default function Hero({ setPath }) {
         },
       });
 
-      // Phase 1: right-front detail shot.
-      tl.addLabel("closeUp", 0);
-      tl.addLabel("frontReveal", 0.14);
-      tl.addLabel("orbitBlendIn", 0.28);
-      tl.addLabel("orbitSweep", 0.32);
-      tl.addLabel("leftLock", 0.68);
-      tl.addLabel("launch", 0.76);
-      tl.addLabel("fadeOut", 0.92);
+      // Define timeline labels from constants
+      tl.addLabel("closeUp", TIMINGS.CLOSE_UP);
+      tl.addLabel("frontReveal", TIMINGS.FRONT_REVEAL);
+      tl.addLabel("orbitBlendIn", TIMINGS.ORBIT_BLEND_IN);
+      tl.addLabel("orbitSweep", TIMINGS.ORBIT_SWEEP);
+      tl.addLabel("leftLock", TIMINGS.LEFT_LOCK);
+      tl.addLabel("launch", TIMINGS.LAUNCH);
+      tl.addLabel("fadeOut", TIMINGS.FADE_OUT);
 
+      // Phase 1: right-front detail shot.
       tl.to(
         animProps.current,
         {
@@ -148,7 +150,7 @@ export default function Hero({ setPath }) {
           cameraTarX: -0.8,
           cameraTarY: 0.3,
           cameraTarZ: 1.4,
-          duration: 0.14,
+          duration: TIMINGS.FRONT_REVEAL - TIMINGS.CLOSE_UP,
         },
         "closeUp",
       );
@@ -165,7 +167,7 @@ export default function Hero({ setPath }) {
           cameraTarZ: 0,
           cameraFov: 38,
           hudOpacity: 0.0,
-          duration: 0.14,
+          duration: TIMINGS.ORBIT_BLEND_IN - TIMINGS.FRONT_REVEAL,
         },
         "frontReveal",
       );
@@ -184,7 +186,7 @@ export default function Hero({ setPath }) {
           telemetryOpacity: 1.0,
           idleVibration: 0.8,
           rpm: 4200,
-          duration: 0.04,
+          duration: TIMINGS.ORBIT_SWEEP - TIMINGS.ORBIT_BLEND_IN,
           ease: "power1.inOut",
         },
         "orbitBlendIn",
@@ -200,7 +202,7 @@ export default function Hero({ setPath }) {
           cameraTarY: 0.5,
           cameraTarZ: 0,
           cameraFov: 34,
-          duration: 0.36,
+          duration: TIMINGS.LEFT_LOCK - TIMINGS.ORBIT_SWEEP,
           ease: "none",
         },
         "orbitSweep",
@@ -210,21 +212,29 @@ export default function Hero({ setPath }) {
         animProps.current,
         {
           cameraOrbitAngle: Math.PI * 2.5,
-          duration: 0.36,
+          duration: TIMINGS.LEFT_LOCK - TIMINGS.ORBIT_SWEEP,
           ease: "none",
         },
         "orbitSweep",
       );
 
-      // Phase 4: lock the camera on the left side.
+      // Phase 4: lock the camera in front of the car down the track and rotate the car to face it.
       tl.to(
         animProps.current,
         {
           cameraOrbitBlend: 0.0,
+          cameraPosX: 0.3,
+          cameraPosY: 0.65,
+          cameraPosZ: 48.0,
+          cameraTarX: 0.0,
+          cameraTarY: 0.45,
+          cameraTarZ: 0.0,
+          cameraFov: 24,
+          carRotY: Math.PI * 0.5,
           idleVibration: 1.0,
           rpm: 6800,
-          duration: 0.08,
-          ease: "power1.out",
+          duration: TIMINGS.LAUNCH - TIMINGS.LEFT_LOCK,
+          ease: "power1.inOut",
         },
         "leftLock",
       );
@@ -232,7 +242,7 @@ export default function Hero({ setPath }) {
       tl.to(
         animProps.current,
         {
-          carZ: 52,
+          carZ: CAR_GEOMETRY.MAX_Z,
           wheelRotation: 118,
           carPitch: 0.03,
           idleVibration: 0.0,
@@ -240,7 +250,7 @@ export default function Hero({ setPath }) {
           speed: 318,
           rpm: 13200,
           gear: 6,
-          duration: 0.16,
+          duration: TIMINGS.FADE_OUT - TIMINGS.LAUNCH,
           ease: "power2.in",
         },
         "launch",
@@ -254,14 +264,14 @@ export default function Hero({ setPath }) {
           duration: 0.04,
           ease: "power1.out",
         },
-        0.88,
+        "launch+=0.12",
       );
 
       // Phase 6: smoke fade as the car clears frame.
       tl.to(
         animProps.current,
         {
-          carZ: 72,
+          carZ: CAR_GEOMETRY.FINAL_Z,
           wheelRotation: 152,
           launchJitter: 0.0,
           telemetryOpacity: 0.0,
@@ -304,6 +314,7 @@ export default function Hero({ setPath }) {
 
         {/* 3. Headline Text Overlay (fades out in Phase 2) */}
         <div
+          ref={mainContentRef}
           id="hud-main-content"
           className="hud-layer container main-content-layer"
         >
@@ -363,8 +374,11 @@ export default function Hero({ setPath }) {
           </div>
         </div>
 
+
+
         {/* 5. Smoke Fade Transition Overlay (Phase 6) */}
         <div
+          ref={smokeFadeRef}
           id="smoke-fade-overlay"
           className="smoke-fade-transition-layer"
           style={{ opacity: 0, pointerEvents: "none" }}
@@ -728,7 +742,7 @@ export default function Hero({ setPath }) {
         .smoke-fade-transition-layer {
           position: absolute;
           inset: 0;
-          background-color: #030305;
+          background-color: #08080c;
           z-index: 99;
           transition: opacity 0.1s ease-out;
         }
