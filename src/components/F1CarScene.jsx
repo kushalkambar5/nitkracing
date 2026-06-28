@@ -33,6 +33,118 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
     return cloned;
   }, [originalScene]);
 
+  // Procedural Racetrack Textures (CanvasTexture)
+  const trackTexture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext("2d");
+    
+    // Base asphalt color (dark grey)
+    ctx.fillStyle = "#16161b";
+    ctx.fillRect(0, 0, 512, 512);
+
+    // Asphalt noise grain
+    for (let i = 0; i < 20000; i++) {
+      const x = Math.random() * 512;
+      const y = Math.random() * 512;
+      const size = 0.5 + Math.random() * 1.5;
+      const val = 12 + Math.floor(Math.random() * 14);
+      ctx.fillStyle = `rgb(${val}, ${val}, ${val})`;
+      ctx.fillRect(x, y, size, size);
+    }
+
+    // Red and White Checkered Curb Segments on the left/right boundaries
+    const curbWidth = 36;
+    const segHeight = 64;
+    for (let y = 0; y < 512; y += segHeight) {
+      const isRed = (y / segHeight) % 2 === 0;
+      ctx.fillStyle = isRed ? "#d32f2f" : "#f5f5f5";
+      // Left curb
+      ctx.fillRect(0, y, curbWidth, segHeight);
+      // Right curb
+      ctx.fillRect(512 - curbWidth, y, curbWidth, segHeight);
+    }
+
+    // Solid white track lines separating curbs from the main lane
+    ctx.fillStyle = "#e0e0e0";
+    ctx.fillRect(curbWidth, 0, 6, 512);
+    ctx.fillRect(512 - curbWidth - 6, 0, 6, 512);
+
+    // Yellow dashed center line
+    ctx.strokeStyle = "#ffb300";
+    ctx.lineWidth = 8;
+    ctx.setLineDash([32, 32]);
+    ctx.beginPath();
+    ctx.moveTo(256, 0);
+    ctx.lineTo(256, 512);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1, 15);
+    texture.anisotropy = 8;
+    return texture;
+  }, []);
+
+  const trackRoughnessMap = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    
+    ctx.fillStyle = "#888888";
+    ctx.fillRect(0, 0, 256, 256);
+
+    for (let i = 0; i < 15000; i++) {
+      const x = Math.random() * 256;
+      const y = Math.random() * 256;
+      const size = 0.5 + Math.random() * 1.5;
+      const val = 100 + Math.floor(Math.random() * 60);
+      ctx.fillStyle = `rgb(${val}, ${val}, ${val})`;
+      ctx.fillRect(x, y, size, size);
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1, 15);
+    return texture;
+  }, []);
+
+  const startGridTexture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext("2d");
+    
+    ctx.clearRect(0, 0, 512, 512);
+
+    // Draw white staging box outline (F1 grid box style)
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+    ctx.lineWidth = 14;
+    // Outer boundary box
+    ctx.strokeRect(128, 96, 256, 320);
+
+    // Yellow contact line for front tires alignment
+    ctx.fillStyle = "#ffb300";
+    ctx.fillRect(128, 96, 256, 20);
+
+    // Checkered line at the rear of the box
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    const size = 32;
+    for (let x = 128; x < 384; x += size) {
+      if ((x / size) % 2 === 0) {
+        ctx.fillRect(x, 416 - size, size, size);
+      }
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    return texture;
+  }, []);
+
   const carRef = useRef();
   const wheelsRef = useRef([]);
 
@@ -285,18 +397,36 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress }) {
         <primitive object={brakeLightTarget} position={[0, 0.3, 10]} />
       </group>
 
-      {/* Shadow-receiving ground */}
+      {/* Dark background tarmac/runoff area */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[150, 300]} />
         <meshStandardMaterial
           color="#060608"
-          roughness={0.6}
-          metalness={0.2}
+          roughness={0.8}
+          metalness={0.1}
         />
       </mesh>
 
-      {/* Grid for track motion sense */}
-      <gridHelper args={[150, 150, '#22222a', '#0c0c10']} position={[0, 0.01, 0]} />
+      {/* Racetrack Center Strip */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]} receiveShadow>
+        <planeGeometry args={[16, 300]} />
+        <meshStandardMaterial
+          map={trackTexture}
+          roughnessMap={trackRoughnessMap}
+          roughness={0.7}
+          metalness={0.15}
+        />
+      </mesh>
+
+      {/* F1 Staging Grid Box overlay (placed at start position z = 0) */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
+        <planeGeometry args={[12, 12]} />
+        <meshBasicMaterial
+          map={startGridTexture}
+          transparent
+          depthWrite={false}
+        />
+      </mesh>
 
       {/* Ambient Floating Dust */}
       <DustParticles count={200} />
