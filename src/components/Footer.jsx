@@ -67,6 +67,17 @@ export default function Footer({ setPath }) {
           </div>
           <div className="footer-meta-right">
             <a
+              href="https://x.com/nitkracing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon-link x"
+              aria-label="X (formerly Twitter)"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+            <a
               href="https://www.instagram.com/nitkracing/"
               target="_blank"
               rel="noopener noreferrer"
@@ -259,7 +270,14 @@ export default function Footer({ setPath }) {
           transform: scale(1.12);
         }
 
-        /* Hover States for Instagram, LinkedIn, and Facebook */
+         /* Hover States for Instagram, LinkedIn, and Facebook */
+        .social-icon-link.x:hover {
+          color: #ffffff;
+          border-color: #ffffff;
+          background-color: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
         .social-icon-link.instagram:hover {
           color: #E1306C;
           border-color: #E1306C;
