@@ -37,7 +37,6 @@ export default function MainTeam({ setPath }) {
 
   const handleViewAll = () => {
     setPath('/teams');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

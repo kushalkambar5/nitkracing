@@ -9,7 +9,6 @@ const allImages = Object.values(imageFiles).map((mod) => mod.default);
 export default function GallerySection({ setPath }) {
   const handleViewAll = () => {
     setPath('/Gallery');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Select a random half of images for the 3D gallery

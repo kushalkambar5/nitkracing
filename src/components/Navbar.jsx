@@ -16,7 +16,7 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
   const handleNavClick = (path) => {
     setPath(path);
     setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   return (

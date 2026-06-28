@@ -51,7 +51,6 @@ export default function Achievements({ setPath }) {
 
   const handleViewAll = () => {
     setPath('/achievements');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

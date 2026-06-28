@@ -7,13 +7,11 @@ export default function BlogsSection({ setPath, setSelectedBlogId }) {
   const handleBlogClick = (id) => {
     setSelectedBlogId(id);
     setPath('/blogs');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleViewAll = () => {
     setSelectedBlogId(null);
     setPath('/blogs');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

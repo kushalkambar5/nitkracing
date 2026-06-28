@@ -53,6 +53,11 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [path]);
+
   // Setter function that also pushes state to history
   const navigateTo = (newPath) => {
     window.history.pushState(null, '', newPath);

@@ -351,7 +351,6 @@ export default function Hero({ setPath }) {
               className="btn btn-secondary"
               onClick={() => {
                 setPath("/achievements");
-                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
               Our Legacy

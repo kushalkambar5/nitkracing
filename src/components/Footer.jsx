@@ -1,7 +1,6 @@
 export default function Footer({ setPath }) {
   const handleNavClick = (path) => {
     setPath(path);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
