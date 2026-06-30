@@ -493,6 +493,9 @@ class App {
     });
   }
   onTouchDown(e) {
+    if (document.querySelector('.chronicles-modal-overlay') || document.querySelector('.gallery-modal-overlay')) {
+      return;
+    }
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = e.touches ? e.touches[0].clientX : e.clientX;
@@ -500,6 +503,9 @@ class App {
     this.dragged = false;
   }
   onTouchMove(e) {
+    if (document.querySelector('.chronicles-modal-overlay') || document.querySelector('.gallery-modal-overlay')) {
+      return;
+    }
     if (!this.isDown) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     const y = e.touches ? e.touches[0].clientY : e.clientY;
@@ -510,6 +516,10 @@ class App {
     this.scroll.target = this.scroll.position + distance;
   }
   onTouchUp(e) {
+    if (document.querySelector('.chronicles-modal-overlay') || document.querySelector('.gallery-modal-overlay')) {
+      this.isDown = false;
+      return;
+    }
     this.isDown = false;
     this.onCheck();
 
@@ -541,6 +551,9 @@ class App {
     }
   }
   onMouseMove(e) {
+    if (document.querySelector('.chronicles-modal-overlay') || document.querySelector('.gallery-modal-overlay')) {
+      return;
+    }
     if (this.isDown) return;
     const rect = this.gl.canvas.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -558,6 +571,9 @@ class App {
     }
   }
   onWheel(e) {
+    if (document.querySelector('.chronicles-modal-overlay') || document.querySelector('.gallery-modal-overlay')) {
+      return;
+    }
     const delta = e.deltaY || e.wheelDelta || e.detail;
     this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
     this.onCheckDebounce();

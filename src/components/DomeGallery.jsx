@@ -118,8 +118,8 @@ export default function DomeGallery({
   enlargeTransitionMs = DEFAULTS.enlargeTransitionMs,
   segments = DEFAULTS.segments,
   dragDampening = 2,
-  openedImageWidth = '250px',
-  openedImageHeight = '350px',
+  openedImageWidth = null,
+  openedImageHeight = null,
   imageBorderRadius = '30px',
   openedImageBorderRadius = '30px',
   grayscale = true
@@ -215,6 +215,11 @@ export default function DomeGallery({
         const mainR = mainRef.current.getBoundingClientRect();
 
         const hasCustomSize = openedImageWidth && openedImageHeight;
+        let targetWidth = frameR.width;
+        let targetHeight = frameR.height;
+        let centeredLeft = frameR.left - mainR.left;
+        let centeredTop = frameR.top - mainR.top;
+
         if (hasCustomSize) {
           const tempDiv = document.createElement('div');
           tempDiv.style.cssText = `position: absolute; width: ${openedImageWidth}; height: ${openedImageHeight}; visibility: hidden;`;
@@ -222,17 +227,32 @@ export default function DomeGallery({
           const tempRect = tempDiv.getBoundingClientRect();
           document.body.removeChild(tempDiv);
 
-          const centeredLeft = frameR.left - mainR.left + (frameR.width - tempRect.width) / 2;
-          const centeredTop = frameR.top - mainR.top + (frameR.height - tempRect.height) / 2;
-
-          enlargedOverlay.style.left = `${centeredLeft}px`;
-          enlargedOverlay.style.top = `${centeredTop}px`;
+          targetWidth = tempRect.width;
+          targetHeight = tempRect.height;
+          centeredLeft = frameR.left - mainR.left + (frameR.width - targetWidth) / 2;
+          centeredTop = frameR.top - mainR.top + (frameR.height - targetHeight) / 2;
         } else {
-          enlargedOverlay.style.left = `${frameR.left - mainR.left}px`;
-          enlargedOverlay.style.top = `${frameR.top - mainR.top}px`;
-          enlargedOverlay.style.width = `${frameR.width}px`;
-          enlargedOverlay.style.height = `${frameR.height}px`;
+          const imgEl = enlargedOverlay.querySelector('img');
+          let imgAspect = 1.0;
+          if (imgEl && imgEl.naturalWidth && imgEl.naturalHeight) {
+            imgAspect = imgEl.naturalWidth / imgEl.naturalHeight;
+          }
+
+          if (imgAspect > frameR.width / frameR.height) {
+            targetWidth = frameR.width;
+            targetHeight = frameR.width / imgAspect;
+          } else {
+            targetHeight = frameR.height;
+            targetWidth = targetHeight * imgAspect;
+          }
+          centeredLeft = frameR.left - mainR.left + (frameR.width - targetWidth) / 2;
+          centeredTop = frameR.top - mainR.top + (frameR.height - targetHeight) / 2;
         }
+
+        enlargedOverlay.style.left = `${centeredLeft}px`;
+        enlargedOverlay.style.top = `${centeredTop}px`;
+        enlargedOverlay.style.width = `${targetWidth}px`;
+        enlargedOverlay.style.height = `${targetHeight}px`;
       }
     });
     ro.observe(root);
@@ -490,27 +510,67 @@ export default function DomeGallery({
       originalTilePositionRef.current = { left: tileR.left, top: tileR.top, width: tileR.width, height: tileR.height };
       el.style.visibility = 'hidden';
       el.style.zIndex = 0;
+
+      const hasCustomSize = openedImageWidth && openedImageHeight;
+      let targetWidth = frameR.width;
+      let targetHeight = frameR.height;
+      let centeredLeft = frameR.left - mainR.left;
+      let centeredTop = frameR.top - mainR.top;
+
+      if (hasCustomSize) {
+        const tempDiv = document.createElement('div');
+        tempDiv.style.cssText = `position: absolute; width: ${openedImageWidth}; height: ${openedImageHeight}; visibility: hidden;`;
+        document.body.appendChild(tempDiv);
+        const tempRect = tempDiv.getBoundingClientRect();
+        document.body.removeChild(tempDiv);
+
+        targetWidth = tempRect.width;
+        targetHeight = tempRect.height;
+        centeredLeft = frameR.left - mainR.left + (frameR.width - targetWidth) / 2;
+        centeredTop = frameR.top - mainR.top + (frameR.height - targetHeight) / 2;
+      } else {
+        const imgEl = el.querySelector('img');
+        let imgAspect = 1.0;
+        if (imgEl && imgEl.naturalWidth && imgEl.naturalHeight) {
+          imgAspect = imgEl.naturalWidth / imgEl.naturalHeight;
+        }
+
+        if (imgAspect > frameR.width / frameR.height) {
+          // Image is wider than frame
+          targetWidth = frameR.width;
+          targetHeight = frameR.width / imgAspect;
+        } else {
+          // Image is taller than frame
+          targetHeight = frameR.height;
+          targetWidth = targetHeight * imgAspect;
+        }
+        centeredLeft = frameR.left - mainR.left + (frameR.width - targetWidth) / 2;
+        centeredTop = frameR.top - mainR.top + (frameR.height - targetHeight) / 2;
+      }
+
       const overlay = document.createElement('div');
       overlay.className = 'enlarge';
       overlay.style.position = 'absolute';
-      overlay.style.left = frameR.left - mainR.left + 'px';
-      overlay.style.top = frameR.top - mainR.top + 'px';
-      overlay.style.width = frameR.width + 'px';
-      overlay.style.height = frameR.height + 'px';
+      overlay.style.left = centeredLeft + 'px';
+      overlay.style.top = centeredTop + 'px';
+      overlay.style.width = targetWidth + 'px';
+      overlay.style.height = targetHeight + 'px';
       overlay.style.opacity = '0';
       overlay.style.zIndex = '30';
       overlay.style.willChange = 'transform, opacity';
       overlay.style.transformOrigin = 'top left';
       overlay.style.transition = `transform ${enlargeTransitionMs}ms ease, opacity ${enlargeTransitionMs}ms ease`;
+
       const rawSrc = parent.dataset.src || el.querySelector('img')?.src || '';
       const img = document.createElement('img');
       img.src = rawSrc;
       overlay.appendChild(img);
       viewerRef.current.appendChild(overlay);
-      const tx0 = tileR.left - frameR.left;
-      const ty0 = tileR.top - frameR.top;
-      const sx0 = tileR.width / frameR.width;
-      const sy0 = tileR.height / frameR.height;
+
+      const tx0 = tileR.left - (centeredLeft + mainR.left);
+      const ty0 = tileR.top - (centeredTop + mainR.top);
+      const sx0 = tileR.width / targetWidth;
+      const sy0 = tileR.height / targetHeight;
 
       const validSx0 = isFinite(sx0) && sx0 > 0 ? sx0 : 1;
       const validSy0 = isFinite(sy0) && sy0 > 0 ? sy0 : 1;
@@ -523,39 +583,6 @@ export default function DomeGallery({
         overlay.style.transform = 'translate(0px, 0px) scale(1, 1)';
         rootRef.current?.setAttribute('data-enlarging', 'true');
       }, 16);
-
-      const wantsResize = openedImageWidth || openedImageHeight;
-      if (wantsResize) {
-        const onFirstEnd = ev => {
-          if (ev.propertyName !== 'transform') return;
-          overlay.removeEventListener('transitionend', onFirstEnd);
-          const prevTransition = overlay.style.transition;
-          overlay.style.transition = 'none';
-          const tempWidth = openedImageWidth || `${frameR.width}px`;
-          const tempHeight = openedImageHeight || `${frameR.height}px`;
-          overlay.style.width = tempWidth;
-          overlay.style.height = tempHeight;
-          const newRect = overlay.getBoundingClientRect();
-          overlay.style.width = frameR.width + 'px';
-          overlay.style.height = frameR.height + 'px';
-          void overlay.offsetWidth;
-          overlay.style.transition = `left ${enlargeTransitionMs}ms ease, top ${enlargeTransitionMs}ms ease, width ${enlargeTransitionMs}ms ease, height ${enlargeTransitionMs}ms ease`;
-          const centeredLeft = frameR.left - mainR.left + (frameR.width - newRect.width) / 2;
-          const centeredTop = frameR.top - mainR.top + (frameR.height - newRect.height) / 2;
-          requestAnimationFrame(() => {
-            overlay.style.left = `${centeredLeft}px`;
-            overlay.style.top = `${centeredTop}px`;
-            overlay.style.width = tempWidth;
-            overlay.style.height = tempHeight;
-          });
-          const cleanupSecond = () => {
-            overlay.removeEventListener('transitionend', cleanupSecond);
-            overlay.style.transition = prevTransition;
-          };
-          overlay.addEventListener('transitionend', cleanupSecond, { once: true });
-        };
-        overlay.addEventListener('transitionend', onFirstEnd);
-      }
     },
     [enlargeTransitionMs, lockScroll, openedImageHeight, openedImageWidth, segments, unlockScroll]
   );
