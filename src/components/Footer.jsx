@@ -25,9 +25,6 @@ export default function Footer({ setPath }) {
               <button onClick={() => handleNavClick("/gallery")}>
                 Gallery
               </button>
-              <button onClick={() => handleNavClick("/blogs")}>
-                Blogs & Articles
-              </button>
               <a href="#about" onClick={() => handleNavClick("/")}>
                 About the Club
               </a>

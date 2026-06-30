@@ -10,7 +10,6 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
     { name: 'Team', path: '/teams' },
     { name: 'Achievements', path: '/achievements' },
     { name: 'Gallery', path: '/Gallery' },
-    { name: 'Blogs', path: '/blogs' },
   ];
 
   const handleNavClick = (path) => {
@@ -56,12 +55,7 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
           />
 
 
-          {/* Apply CTA (Desktop) */}
-          <Pointer style={{ display: "inline-block" }}>
-            <a href="#recruitments" className="btn btn-primary btn-sm nav-apply-btn" onClick={() => handleNavClick('/')}>
-              Apply Now
-            </a>
-          </Pointer>
+
 
           {/* Mobile Menu Toggle */}
           <button 
@@ -99,11 +93,7 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
               {link.name}
             </button>
           ))}
-          <Pointer style={{ display: "block", width: "100%" }}>
-            <a href="#recruitments" className="btn btn-primary btn-block mobile-apply-btn" onClick={() => handleNavClick('/')}>
-              Apply Now
-            </a>
-          </Pointer>
+
         </nav>
       </div>
 

@@ -3,12 +3,10 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Departments from './components/Departments';
-import MainTeam from './components/MainTeam';
+import KeyContacts from './components/KeyContacts';
 import Achievements from './components/Achievements';
 import GallerySection from './components/GallerySection';
 import Sponsors from './components/Sponsors';
-import Recruitment from './components/Recruitment';
-import BlogsSection from './components/BlogsSection';
 import Chronicles from './components/Chronicles';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -17,7 +15,6 @@ import Footer from './components/Footer';
 import TeamsPage from './pages/TeamsPage';
 import AchievementsPage from './pages/AchievementsPage';
 import GalleryPage from './pages/GalleryPage';
-import BlogsPage from './pages/BlogsPage';
 
 import './App.css';
 
@@ -35,8 +32,7 @@ function App() {
     return p === '/' ? '/' : p;
   });
 
-  // Selected blog ID for deep linking from Homepage blogs to BlogsPage read view
-  const [selectedBlogId, setSelectedBlogId] = useState(null);
+
 
   // Sync theme with document class/attributes
   useEffect(() => {
@@ -79,13 +75,7 @@ function App() {
         return <AchievementsPage />;
       case '/gallery':
         return <GalleryPage />;
-      case '/blogs':
-        return (
-          <BlogsPage 
-            selectedBlogId={selectedBlogId} 
-            setSelectedBlogId={setSelectedBlogId} 
-          />
-        );
+
       default:
         // Homepage Story Line structure
         return (
@@ -93,15 +83,10 @@ function App() {
             <Hero setPath={navigateTo} />
             <About />
             <Departments />
-            <MainTeam setPath={navigateTo} />
+            <KeyContacts />
             <Achievements setPath={navigateTo} />
             <GallerySection setPath={navigateTo} />
             <Sponsors />
-            <Recruitment />
-            <BlogsSection 
-              setPath={navigateTo} 
-              setSelectedBlogId={setSelectedBlogId} 
-            />
             <Chronicles />
             <Contact />
           </>

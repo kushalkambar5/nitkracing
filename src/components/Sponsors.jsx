@@ -15,6 +15,7 @@ import jlcpcbLogo from '../assets/sponsers/jlcpcb.png';
 import kearneyLogo from '../assets/sponsers/kearney_perlab.jpg';
 import questLogo from '../assets/sponsers/quest_global.png';
 import tdpsLogo from '../assets/sponsers/tdps.png';
+import nitkfootballLogo from '../assets/sponsers/nitk_football.png'
 
 export default function Sponsors() {
   const sponsorLogos = [
@@ -31,7 +32,8 @@ export default function Sponsors() {
     { src: jlcpcbLogo, alt: 'JLCPCB', title: 'JLCPCB', href: 'https://jlcpcb.com' },
     { src: kearneyLogo, alt: 'Kearney PERLab', title: 'Kearney PERLab', href: 'https://www.kearney.com/perlab' },
     { src: questLogo, alt: 'Quest Global', title: 'Quest Global', href: 'https://www.quest-global.com' },
-    { src: tdpsLogo, alt: 'TD Power Systems', title: 'TD Power Systems', href: 'http://www.tdps.co.in' }
+    { src: tdpsLogo, alt: 'TD Power Systems', title: 'TD Power Systems', href: 'http://www.tdps.co.in' },
+    { src: nitkfootballLogo, alt: 'NITK Football', title: 'NITK Football', href: 'https://www.nitk.edu.in' },
   ];
 
   return (
