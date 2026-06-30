@@ -216,7 +216,7 @@ export default function Hero({ setPath }) {
       tl.to(
         animProps.current,
         {
-          cameraOrbitAngle: Math.PI * 2.5,
+          cameraOrbitAngle: Math.PI * 0.5,
           duration: TIMINGS.LEFT_LOCK - TIMINGS.ORBIT_SWEEP,
           ease: "none",
         },
