@@ -22,7 +22,7 @@ const contactsList = [
     label: "Dr. Saurabh Chandraker",
     tag: "Faculty Advisor",
     phone: "+91 99816 40044",
-  }
+  },
 ];
 
 export default function Contact() {
@@ -138,10 +138,10 @@ export default function Contact() {
                 <div>
                   <h4 className="info-label">Email Address</h4>
                   <a
-                    href="mailto:nitkracing@nitk.edu.in"
+                    href="mailto:racing@nitk.edu.in"
                     className="info-val info-link"
                   >
-                    nitkracing@nitk.edu.in
+                    racing@nitk.edu.in
                   </a>
                 </div>
               </div>
@@ -255,10 +255,16 @@ export default function Contact() {
         </div>
 
         {/* Key Contacts Section */}
-        <div className="key-contacts-container" ref={containerRef} onMouseMove={handleMove}>
+        <div
+          className="key-contacts-container"
+          ref={containerRef}
+          onMouseMove={handleMove}
+        >
           <div className="key-contacts-header">
             <h3 className="key-contacts-heading">Key Contacts</h3>
-            <p className="key-contacts-sub">Reach out directly to our team leadership and advisors.</p>
+            <p className="key-contacts-sub">
+              Reach out directly to our team leadership and advisors.
+            </p>
           </div>
 
           <div className="image-reveal-list">
@@ -271,7 +277,11 @@ export default function Contact() {
                 className="image-reveal-item"
               >
                 <div className="reveal-left">
-                  <img src={item.img} alt={item.label} className="reveal-avatar-mobile" />
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="reveal-avatar-mobile"
+                  />
                   <p className="reveal-label">{item.label}</p>
                 </div>
                 <div className="reveal-meta">

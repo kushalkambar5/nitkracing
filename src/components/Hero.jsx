@@ -41,7 +41,6 @@ export default function Hero({ setPath }) {
   const mainContentRef = useRef(null);
   const smokeFadeRef = useRef(null);
 
-
   // Shared mutable ref — GSAP writes to this, R3F useFrame reads it.
   // This bypasses React's prop/render system for 60fps animation.
   const animProps = useRef({
@@ -119,11 +118,13 @@ export default function Hero({ setPath }) {
             animProps.current.progress = self.progress;
 
             if (mainContentRef.current) {
-              mainContentRef.current.style.opacity = animProps.current.hudOpacity;
+              mainContentRef.current.style.opacity =
+                animProps.current.hudOpacity;
               mainContentRef.current.style.transform = `translateY(${(animProps.current.hudOpacity - 1.0) * -20}px)`;
             }
             if (smokeFadeRef.current) {
-              smokeFadeRef.current.style.opacity = animProps.current.smokeFadeOpacity;
+              smokeFadeRef.current.style.opacity =
+                animProps.current.smokeFadeOpacity;
               smokeFadeRef.current.style.pointerEvents =
                 animProps.current.smokeFadeOpacity > 0.8 ? "auto" : "none";
             }
@@ -307,7 +308,7 @@ export default function Hero({ setPath }) {
           gl={{
             antialias: !IS_MOBILE,
             alpha: false,
-            powerPreference: IS_MOBILE ? 'low-power' : 'high-performance',
+            powerPreference: IS_MOBILE ? "low-power" : "high-performance",
           }}
           dpr={IS_MOBILE ? [1, 1] : [1, 2]}
           className="hero-canvas"
@@ -385,8 +386,6 @@ export default function Hero({ setPath }) {
             <span className="indicator-text">SCROLL</span>
           </div>
         </div>
-
-
 
         {/* 5. Smoke Fade Transition Overlay (Phase 6) */}
         <div
