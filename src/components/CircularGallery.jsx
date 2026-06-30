@@ -1,4 +1,4 @@
-import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
+import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform, Raycast } from 'ogl';
 import { useEffect, useRef } from 'react';
 
 import './CircularGallery.css';
@@ -315,6 +315,7 @@ class Media {
       geometry: this.geometry,
       program: this.program
     });
+    this.plane.mediaInstance = this;
     this.plane.setParent(this.scene);
   }
   createTitle() {
@@ -410,11 +411,13 @@ class App {
       scrollSpeed = 2,
       scrollEase = 0.05,
       heightSegments = 50,
-      widthSegments = 100
+      widthSegments = 100,
+      onItemClick
     } = {}
   ) {
     document.documentElement.classList.remove('no-js');
     this.container = container;
+    this.onItemClick = onItemClick;
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.heightSegments = heightSegments;
@@ -493,16 +496,66 @@ class App {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = e.touches ? e.touches[0].clientX : e.clientX;
+    this.startY = e.touches ? e.touches[0].clientY : e.clientY;
+    this.dragged = false;
   }
   onTouchMove(e) {
     if (!this.isDown) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const y = e.touches ? e.touches[0].clientY : e.clientY;
+    if (Math.abs(x - this.start) > 5 || Math.abs(y - this.startY) > 5) {
+      this.dragged = true;
+    }
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = this.scroll.position + distance;
   }
-  onTouchUp() {
+  onTouchUp(e) {
     this.isDown = false;
     this.onCheck();
+
+    if (!this.dragged && this.onItemClick) {
+      const clientX = e.clientX || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : null);
+      const clientY = e.clientY || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : null);
+
+      if (clientX !== null && clientY !== null) {
+        const rect = this.gl.canvas.getBoundingClientRect();
+        const x = ((clientX - rect.left) / rect.width) * 2 - 1;
+        const y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+        if (!this.raycast) {
+          this.raycast = new Raycast();
+        }
+        this.raycast.castMouse(this.camera, [x, y]);
+        const hits = this.raycast.intersectBounds(this.medias.map(m => m.plane));
+        if (hits.length > 0) {
+          const clickedMesh = hits[0];
+          const media = clickedMesh.mediaInstance;
+          if (media) {
+            const originalLength = this.medias.length / 2;
+            const originalIndex = media.index % originalLength;
+            const clickedItem = this.mediasImages[originalIndex];
+            this.onItemClick(clickedItem, originalIndex);
+          }
+        }
+      }
+    }
+  }
+  onMouseMove(e) {
+    if (this.isDown) return;
+    const rect = this.gl.canvas.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    if (!this.raycast) {
+      this.raycast = new Raycast();
+    }
+    this.raycast.castMouse(this.camera, [x, y]);
+    const hits = this.raycast.intersectBounds(this.medias.map(m => m.plane));
+    if (hits.length > 0) {
+      this.container.style.cursor = 'pointer';
+    } else {
+      this.container.style.cursor = 'grab';
+    }
   }
   onWheel(e) {
     const delta = e.deltaY || e.wheelDelta || e.detail;
@@ -510,6 +563,9 @@ class App {
     this.onCheckDebounce();
   }
   onKeyDown(e) {
+    if (document.querySelector('.chronicles-modal-overlay') || document.querySelector('.gallery-modal-overlay')) {
+      return;
+    }
     switch (e.key) {
       case 'ArrowRight':
         e.preventDefault();
@@ -575,6 +631,7 @@ class App {
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
     this.boundOnKeyDown = this.onKeyDown.bind(this);
+    this.boundOnMouseMove = this.onMouseMove.bind(this);
 
     window.addEventListener('resize', this.boundOnResize);
     window.addEventListener('mousewheel', this.boundOnWheel);
@@ -587,6 +644,7 @@ class App {
     window.addEventListener('touchend', this.boundOnTouchUp);
 
     this.container?.addEventListener('keydown', this.boundOnKeyDown);
+    this.container?.addEventListener('mousemove', this.boundOnMouseMove);
   }
   destroy() {
     window.cancelAnimationFrame(this.raf);
@@ -605,6 +663,7 @@ class App {
 
     if (this.container) {
       this.container.removeEventListener('keydown', this.boundOnKeyDown);
+      this.container.removeEventListener('mousemove', this.boundOnMouseMove);
     }
   }
 }
@@ -619,7 +678,8 @@ export default function CircularGallery({
   scrollSpeed = 2,
   scrollEase = 0.05,
   heightSegments = 50,
-  widthSegments = 100
+  widthSegments = 100,
+  onItemClick
 }) {
   const containerRef = useRef(null);
   useEffect(() => {
@@ -637,7 +697,8 @@ export default function CircularGallery({
         scrollSpeed,
         scrollEase,
         heightSegments,
-        widthSegments
+        widthSegments,
+        onItemClick
       });
     });
 
@@ -645,7 +706,7 @@ export default function CircularGallery({
       isMounted = false;
       if (app) app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
+  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase, onItemClick]);
   return (
     <div
       className="circular-gallery"

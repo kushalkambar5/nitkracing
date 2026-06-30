@@ -161,13 +161,7 @@ export default function GalleryPage() {
                   alt={activeModalItem.title} 
                 />
               )}
-            </div>
-
-            <div className="gallery-modal-info">
-              <span className="gallery-modal-tag">{activeModalItem.isVideo ? "VIDEO" : "IMAGE"}</span>
-              <h3 className="gallery-modal-title">{activeModalItem.title}</h3>
-              <p className="gallery-modal-desc">{activeModalItem.description}</p>
-            </div>
+            </div>            
           </div>
 
           <button 

@@ -1,5 +1,3 @@
-import { useState, useRef } from "react";
-import { motion, useSpring } from "framer-motion";
 import keerthivarshanImg from "../assets/members/keerthivarshan.png";
 import vashishtImg from "../assets/members/vashisht.png";
 import drSaurabhImg from "../assets/members/dr_saurabh_chandraker.png";
@@ -26,48 +24,12 @@ const contactsList = [
 ];
 
 export default function KeyContacts() {
-  const [img, setImg] = useState({
-    src: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-    alt: "",
-    opacity: 0,
-  });
-  const imageRef = useRef(null);
-  const containerRef = useRef(null);
-
-  const spring = {
-    stiffness: 150,
-    damping: 15,
-    mass: 0.1,
-  };
-  const imagePos = {
-    x: useSpring(0, spring),
-    y: useSpring(0, spring),
-  };
-
-  const handleMove = (e) => {
-    if (!imageRef.current || !containerRef.current) return;
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const { clientX, clientY } = e;
-    const relativeX = clientX - containerRect.left;
-    const relativeY = clientY - containerRect.top;
-    imagePos.x.set(relativeX - imageRef.current.offsetWidth / 2);
-    imagePos.y.set(relativeY - imageRef.current.offsetHeight / 2);
-  };
-
-  const handleImageInteraction = (item, opacity) => {
-    setImg({ src: item.img, alt: item.label, opacity });
-  };
-
   return (
     <section className="key-contacts-section">
       <div className="speed-lines"></div>
       
       <div className="container">
-        <div
-          className="key-contacts-container"
-          ref={containerRef}
-          onMouseMove={handleMove}
-        >
+        <div className="key-contacts-container">
           <div className="key-contacts-header">
             <h3 className="key-contacts-heading">Key Contacts</h3>
             <p className="key-contacts-sub">
@@ -79,9 +41,6 @@ export default function KeyContacts() {
             {contactsList.map((item) => (
               <div
                 key={item.label}
-                onMouseEnter={() => handleImageInteraction(item, 1)}
-                onMouseMove={() => handleImageInteraction(item, 1)}
-                onMouseLeave={() => handleImageInteraction(item, 0)}
                 className="image-reveal-item"
               >
                 <div className="reveal-left">
@@ -106,18 +65,6 @@ export default function KeyContacts() {
               </div>
             ))}
           </div>
-
-          <motion.img
-            ref={imageRef}
-            src={img.src}
-            alt={img.alt}
-            className="reveal-image"
-            style={{
-              x: imagePos.x,
-              y: imagePos.y,
-              opacity: img.opacity,
-            }}
-          />
         </div>
       </div>
 
@@ -162,7 +109,7 @@ export default function KeyContacts() {
         .image-reveal-item {
           width: 100%;
           padding: 28px 0;
-          cursor: pointer;
+          cursor: default;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -253,24 +200,7 @@ export default function KeyContacts() {
           transform: rotate(45deg) scale(1.2);
         }
 
-        .reveal-image {
-          width: 300px;
-          height: 220px;
-          border-radius: var(--border-radius-md);
-          object-fit: cover;
-          position: absolute;
-          top: 0;
-          left: 0;
-          pointer-events: none;
-          z-index: 10;
-          border: 2px solid var(--accent);
-          box-shadow: var(--shadow);
-        }
-
         @media (max-width: 1024px) {
-          .reveal-image {
-            display: none !important;
-          }
           .reveal-avatar-mobile {
             display: block;
           }
