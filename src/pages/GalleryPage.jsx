@@ -50,31 +50,31 @@ const racingDescriptions = [
   "Aligning team strategies and driver objectives for race day."
 ];
 
+// Generate the items array from the glob imported assets
+const items = Object.entries(mediaFiles).map(([path, module], index) => {
+  const url = module.default;
+  const filename = path.split('/').pop();
+  const isVideo = filename.toLowerCase().endsWith('.mp4');
+
+  const title = isVideo
+    ? "Official Promo Video"
+    : racingTitles[index % racingTitles.length];
+
+  const description = isVideo
+    ? "Footage capturing the intensity, engineering, and sheer speed of the NITK Racing formula student car."
+    : racingDescriptions[index % racingDescriptions.length];
+
+  return {
+    image: url,
+    title,
+    description,
+    isVideo,
+    link: url
+  };
+});
+
 export default function GalleryPage() {
   const [modalItemIndex, setModalItemIndex] = useState(null);
-
-  // Generate the items array from the glob imported assets
-  const items = Object.entries(mediaFiles).map(([path, module], index) => {
-    const url = module.default;
-    const filename = path.split('/').pop();
-    const isVideo = filename.toLowerCase().endsWith('.mp4');
-
-    const title = isVideo
-      ? "Official Promo Video"
-      : racingTitles[index % racingTitles.length];
-
-    const description = isVideo
-      ? "Footage capturing the intensity, engineering, and sheer speed of the NITK Racing formula student car."
-      : racingDescriptions[index % racingDescriptions.length];
-
-    return {
-      image: url,
-      title,
-      description,
-      isVideo,
-      link: url
-    };
-  });
 
   const openModal = (item) => {
     const idx = items.findIndex(i => i.image === item.image);

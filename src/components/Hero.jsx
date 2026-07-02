@@ -4,7 +4,7 @@ import { useProgress } from "@react-three/drei";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import F1CarScene from "./F1CarScene";
-import carModelUrl from "../assets/f1_car_3d_model.glb?url";
+import carModelUrl from "../assets/nitk_racing_car_3d_model.glb?url";
 import loadingSvg from "../assets/loading.svg";
 import { Pointer } from "./ui/pointer";
 import { isMobileDevice } from "../utils/performance";
