@@ -331,19 +331,9 @@ export default function Hero({ setPath }) {
           id="hud-main-content"
           className="hud-layer container main-content-layer"
         >
-          <div className="hero-eyebrow">
-            <div className="chevron-decor">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <span className="eyebrow-text">Formula Student Team</span>
-          </div>
 
           <h1 className="hero-title">
-            Built by students.
-            <br />
-            <span className="accent-text">Driven by passion.</span>
+            Built by students. <span className="accent-text">Driven by passion.</span>
           </h1>
 
           <p className="hero-description">
@@ -351,17 +341,6 @@ export default function Hero({ setPath }) {
             We design, manufacture, and test high-performance formula racecars
             to compete globally.
           </p>
-
-          <div className="hero-actions">
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                setPath("/achievements");
-              }}
-            >
-              Our Legacy
-            </button>
-          </div>
 
           <div className="scroll-indicator">
             <span className="indicator-arrow">↓</span>
@@ -436,10 +415,8 @@ export default function Hero({ setPath }) {
 
         /* Initial Headline Layer */
         .main-content-layer {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: flex-start;
+          position: absolute;
+          inset: 0;
           transition: opacity 0.4s ease, transform 0.4s ease;
           pointer-events: auto;
           z-index: 5;
@@ -479,12 +456,20 @@ export default function Hero({ setPath }) {
         }
 
         .hero-title {
-          font-size: 4.5rem;
+          position: absolute;
+          top: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+          text-align: center;
+          font-size: 4.2rem;
           line-height: 1.05;
-          margin-bottom: 24px;
           letter-spacing: -1.5px;
           font-family: var(--font-primary);
           color: var(--text-primary);
+          width: 100%;
+          max-width: var(--max-width);
+          padding: 0 24px;
+          margin: 0;
         }
 
         .hero-title .accent-text {
@@ -493,11 +478,15 @@ export default function Hero({ setPath }) {
         }
 
         .hero-description {
+          position: absolute;
+          bottom: 120px;
+          right: 24px;
           font-size: 1.15rem;
           color: var(--text-secondary);
-          margin-bottom: 40px;
-          max-width: 580px;
+          max-width: 440px;
           line-height: 1.6;
+          text-align: right;
+          margin: 0;
         }
 
         .hero-actions {
@@ -762,7 +751,14 @@ export default function Hero({ setPath }) {
             grid-row: 4;
           }
           .hero-title {
-            font-size: 3.2rem;
+            font-size: 3rem;
+            top: 24px;
+          }
+          .hero-description {
+            font-size: 1rem;
+            bottom: 100px;
+            right: 24px;
+            max-width: 380px;
           }
         }
 
@@ -780,33 +776,36 @@ export default function Hero({ setPath }) {
             display: none;
           }
           .hero-title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
+            top: 20px;
+            max-width: 90%;
           }
           .hero-description {
-            font-size: 1rem;
+            font-size: 0.95rem;
+            bottom: 85px;
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            padding: 0 24px;
           }
         }
 
         @media (max-width: 480px) {
           .hero-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
             letter-spacing: -0.5px;
+            top: 15px;
           }
           .hero-description {
-            font-size: 0.9rem;
-            margin-bottom: 28px;
-          }
-          .hero-eyebrow {
-            margin-bottom: 16px;
-          }
-          .eyebrow-text {
-            font-size: 0.75rem;
-          }
-          .hero-actions {
-            gap: 10px;
+            font-size: 0.85rem;
+            bottom: 75px;
+            padding: 0 16px;
           }
           .scroll-indicator {
-            bottom: 24px;
+            bottom: 20px;
           }
         }
       `}</style>
