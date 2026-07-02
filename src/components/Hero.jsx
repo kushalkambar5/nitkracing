@@ -53,9 +53,9 @@ export default function Hero({ setPath }) {
 
     // Camera — start at right-front tire close-up
     // Car Front = +Z. Car Right = -X
-    cameraPosX: -2.2,
-    cameraPosY: 0.6,
-    cameraPosZ: 3.5,
+    cameraPosX: -3.0,
+    cameraPosY: 0.8,
+    cameraPosZ: 4.6,
     cameraTarX: -1.0,
     cameraTarY: 0.3,
     cameraTarZ: 1.8,
@@ -149,9 +149,9 @@ export default function Hero({ setPath }) {
         animProps.current,
         {
           headlightIntensity: 1.0,
-          cameraPosX: -2.6,
-          cameraPosY: 0.8,
-          cameraPosZ: 4.2,
+          cameraPosX: -3.6,
+          cameraPosY: 1.05,
+          cameraPosZ: 5.6,
           cameraTarX: -0.8,
           cameraTarY: 0.3,
           cameraTarZ: 1.4,
