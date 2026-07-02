@@ -273,7 +273,7 @@ export default function F1CarScene({ modelUrl, animProps, getCarZAtProgress, per
       carRef.current.rotation.x = THREE.MathUtils.lerp(carRef.current.rotation.x, targetPitch, 0.15);
       carRef.current.position.y = engineVibY;
       carRef.current.rotation.z = engineVibZ;
-      carRef.current.rotation.y = a.carRotY ?? Math.PI;
+      carRef.current.rotation.y = a.carRotY - (Math.PI / 2) ?? Math.PI;
     }
 
     // 2. Camera: Remove double-smoothing on position (snap directly to GSAP)
