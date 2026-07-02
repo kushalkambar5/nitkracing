@@ -465,7 +465,7 @@ export default function Hero({ setPath }) {
           line-height: 1.05;
           letter-spacing: -1.5px;
           font-family: var(--font-primary);
-          color: var(--text-primary);
+          color: #ffffff;
           width: 100%;
           max-width: var(--max-width);
           padding: 0 24px;
@@ -482,7 +482,7 @@ export default function Hero({ setPath }) {
           bottom: 120px;
           right: 24px;
           font-size: 1.15rem;
-          color: var(--text-secondary);
+          color: #bfbfbf;
           max-width: 440px;
           line-height: 1.6;
           text-align: right;
