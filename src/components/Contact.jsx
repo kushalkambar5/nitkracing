@@ -8,13 +8,39 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real application, you would send this to a backend/email API.
-    setSubmitted(true);
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setTimeout(() => setSubmitted(false), 5000);
+    setIsSending(true);
+    setError("");
+    setSubmitted(false);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitted(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        setError(data.error || "Something went wrong. Please try again later.");
+      }
+    } catch (err) {
+      console.error("Error submitting contact form:", err);
+      setError("Failed to send message. Please check your connection and try again.");
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -126,6 +152,25 @@ export default function Contact() {
               </div>
             )}
 
+            {error && (
+              <div className="error-alert">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className="alert-error-icon"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                {error}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="contact-form">
               <div className="form-group-row">
                 <div className="form-group">
@@ -137,6 +182,7 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Enter your name"
+                    disabled={isSending}
                     required
                   />
                 </div>
@@ -150,6 +196,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Enter your email"
+                    disabled={isSending}
                     required
                   />
                 </div>
@@ -164,6 +211,7 @@ export default function Contact() {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder="Enter message subject"
+                  disabled={isSending}
                   required
                 />
               </div>
@@ -177,23 +225,47 @@ export default function Contact() {
                   onChange={handleChange}
                   placeholder="Type your message here..."
                   rows="5"
+                  disabled={isSending}
                   required
                 ></textarea>
               </div>
 
-              <button type="submit" className="btn btn-primary form-submit-btn">
-                Send Message
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <line x1="22" y1="2" x2="11" y2="13"></line>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
+              <button
+                type="submit"
+                className="btn btn-primary form-submit-btn"
+                disabled={isSending}
+              >
+                {isSending ? (
+                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                    Sending...
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      className="animate-spin"
+                    >
+                      <circle cx="12" cy="12" r="10" strokeDasharray="30" strokeDashoffset="10"></circle>
+                    </svg>
+                  </span>
+                ) : (
+                  <>
+                    Send Message
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    >
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                  </>
+                )}
               </button>
             </form>
           </div>
@@ -333,6 +405,38 @@ export default function Contact() {
 
         .alert-check {
           color: var(--accent);
+        }
+
+        .error-alert {
+          background-color: rgba(220, 38, 38, 0.1);
+          border: 1px solid rgb(220, 38, 38);
+          color: var(--text-primary);
+          padding: 12px 16px;
+          border-radius: var(--border-radius-sm);
+          font-size: 0.85rem;
+          margin-bottom: 24px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          text-align: left;
+        }
+
+        .alert-error-icon {
+          color: rgb(220, 38, 38);
+          flex-shrink: 0;
+        }
+
+        .animate-spin {
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
 
         .contact-form {
