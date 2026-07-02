@@ -16,6 +16,18 @@ export default function Footer({ setPath }) {
               <button onClick={() => handleNavClick("/achievements")}>
                 Achievements
               </button>
+              <a
+                href="https://nitk-racing-reimbursement-portal.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-finance-link"
+              >
+                <span>Club Finance</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="footer-finance-icon">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
             </div>
           </div>
 
@@ -199,6 +211,26 @@ export default function Footer({ setPath }) {
         .nav-col-links a:hover, .nav-col-links button:hover {
           color: var(--accent);
           transform: translateY(-1px);
+        }
+
+        .footer-finance-link {
+          display: inline-flex !important;
+          align-items: center;
+          gap: 4px;
+          color: var(--accent) !important;
+          font-weight: 700 !important;
+        }
+
+        .footer-finance-link:hover {
+          color: var(--accent-hover) !important;
+        }
+
+        .footer-finance-icon {
+          transition: transform 0.2s ease;
+        }
+
+        .footer-finance-link:hover .footer-finance-icon {
+          transform: translate(1px, -1px);
         }
 
         .footer-meta-row {

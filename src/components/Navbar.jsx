@@ -46,6 +46,20 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
 
         {/* Right Action Area */}
         <div className="navbar-actions">
+          {/* Club Finance Link */}
+          <a
+            href="https://nitk-racing-reimbursement-portal.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="navbar-finance-btn"
+          >
+            <span>Club Finance</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="finance-btn-icon">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </a>
+
           {/* Theme Toggle */}
           <AnimatedThemeToggler
             theme={theme}
@@ -93,6 +107,20 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
               {link.name}
             </button>
           ))}
+
+          <a
+            href="https://nitk-racing-reimbursement-portal.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-finance-btn"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <span>Club Finance</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="finance-btn-icon">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </a>
 
         </nav>
       </div>
@@ -217,6 +245,73 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
           background-color: var(--accent-soft);
         }
 
+        .navbar-finance-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          height: 36px;
+          padding: 0 14px;
+          font-family: var(--font-primary);
+          font-size: 0.95rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: var(--accent);
+          background-color: transparent;
+          border: 1.5px solid var(--accent);
+          border-radius: var(--border-radius-sm);
+          cursor: pointer;
+          transition: var(--transition);
+          text-decoration: none;
+        }
+
+        .navbar-finance-btn:hover {
+          color: #FFFFFF;
+          background-color: var(--accent);
+          border-color: var(--accent);
+          box-shadow: var(--glow);
+          transform: translateY(-1px);
+        }
+
+        .finance-btn-icon {
+          transition: transform 0.2s ease;
+        }
+
+        .navbar-finance-btn:hover .finance-btn-icon,
+        .mobile-finance-btn:hover .finance-btn-icon,
+        .mobile-finance-btn:active .finance-btn-icon {
+          transform: translate(1px, -1px);
+        }
+
+        .mobile-finance-btn {
+          margin-top: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 12px 24px;
+          font-family: var(--font-primary);
+          font-size: 1.1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: var(--accent);
+          background-color: transparent;
+          border: 2px solid var(--accent);
+          border-radius: var(--border-radius-sm);
+          cursor: pointer;
+          transition: var(--transition);
+          text-decoration: none;
+          text-align: center;
+        }
+
+        .mobile-finance-btn:hover, .mobile-finance-btn:active {
+          color: #FFFFFF;
+          background-color: var(--accent);
+          border-color: var(--accent);
+        }
+
         .nav-apply-btn {
           height: 36px;
           display: flex;
@@ -281,7 +376,7 @@ export default function Navbar({ currentPath, setPath, theme, toggleTheme }) {
         }
 
         @media (max-width: 768px) {
-          .desktop-nav, .nav-apply-btn {
+          .desktop-nav, .nav-apply-btn, .navbar-finance-btn {
             display: none;
           }
           .mobile-toggle-btn {
